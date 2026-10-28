@@ -197,9 +197,16 @@
 
         {{ fa if lang == 'fa' else en }}
       </span>
-      <span
-        aria-disabled="true"
-        class="ms-auto inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-400"
+      <a
+        href="{{ url_for('login', lang=lang) }}"
+        class="ms-auto inline-flex items-center gap-2 rounded-xl
+              border border-white/15 bg-white/5
+              px-4 py-2.5 text-sm font-medium text-white
+              transition-colors
+              hover:bg-white/10
+              focus-visible:outline-2
+              focus-visible:outline-offset-4
+              focus-visible:outline-amber-300"
       >
         <svg
           aria-hidden="true"
@@ -215,7 +222,7 @@
         </svg>
 
         {{ 'ورود' if lang == 'fa' else 'Login' }}
-      </span>
+      </a>
     </div>
   </nav>
 </header>

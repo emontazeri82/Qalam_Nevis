@@ -7,7 +7,13 @@
 
 <article
   data-reveal
-  class="min-w-0 border-b border-stone-300 py-6"
+  class="group flex h-full min-w-0 flex-col
+         border-b border-stone-300 py-6
+         transition-all duration-300 ease-out
+         hover:-translate-y-1
+         hover:border-teal-300
+         motion-reduce:transform-none
+         motion-reduce:transition-none"
 >
 
   <!-- Original title, author, image, and excerpt -->
@@ -21,7 +27,7 @@
       <a
         href="{{ article_url }}"
         aria-label="{{ article.title }}"
-        class="group mb-3 block w-24 overflow-hidden rounded-sm
+        class="mb-3 block w-24 overflow-hidden rounded-sm
                border border-stone-200 bg-stone-100
                focus-visible:outline-2
                focus-visible:outline-offset-4
@@ -37,7 +43,7 @@
           loading="lazy"
           decoding="async"
           class="h-28 w-full object-cover object-center
-                 transition-transform duration-300
+                 transition-transform duration-500 ease-out
                  group-hover:scale-105
                  motion-reduce:transform-none
                  motion-reduce:transition-none"
@@ -55,7 +61,7 @@
         href="{{ article_url }}"
         class="rounded underline-offset-4
                transition-colors
-               hover:text-teal-800
+               group-hover:text-teal-800
                hover:underline
                motion-reduce:transition-none
                focus-visible:outline-2
@@ -80,68 +86,71 @@
 
   </div>
 
-
-  <!-- Published date and reading time -->
-  <div
-    lang="{{ lang }}"
-    dir="{{ 'rtl' if interface_is_fa else 'ltr' }}"
-    class="mt-5 flex flex-wrap items-center
-           gap-x-2 gap-y-1 text-xs text-slate-500"
-  >
-
-    <span>
-      {{ 'انتشار:' if interface_is_fa else 'Published:' }}
-    </span>
-
-    <time datetime="{{ article.date }}" dir="ltr">
-      {{ article.date }}
-    </time>
-
-
-    {% if article.reading_minutes %}
-
-      <span aria-hidden="true">·</span>
-
-      <span>
-        {{ article.reading_minutes }}
-        {{ 'دقیقه مطالعه'
-           if interface_is_fa
-           else 'min read' }}
-      </span>
-
-    {% endif %}
-
-  </div>
-
-
-  <!-- Continue reading -->
-  <div
-    lang="{{ lang }}"
-    dir="{{ 'rtl' if interface_is_fa else 'ltr' }}"
-    class="mt-3"
-  >
-
-    <a
-      href="{{ article_url }}"
-      class="inline-flex items-center gap-2 rounded
-             text-sm font-semibold text-teal-800
-             underline-offset-4
-             hover:underline
-             focus-visible:outline-2
-             focus-visible:outline-offset-4
-             focus-visible:outline-teal-700"
+  <div class="mt-auto pt-5">
+    <!-- Published date and reading time -->
+    <div
+      lang="{{ lang }}"
+      dir="{{ 'rtl' if interface_is_fa else 'ltr' }}"
+      class="flex flex-wrap items-center
+            gap-x-2 gap-y-1 text-xs text-slate-500"
     >
 
-      {{ 'ادامهٔ مطلب'
-         if interface_is_fa
-         else 'Continue reading' }}
-
-      <span aria-hidden="true">
-        {{ '←' if interface_is_fa else '→' }}
+      <span>
+        {{ 'انتشار:' if interface_is_fa else 'Published:' }}
       </span>
 
-    </a>
+      <time datetime="{{ article.date }}" dir="ltr">
+        {{ article.date }}
+      </time>
 
+
+      {% if article.reading_minutes %}
+
+        <span aria-hidden="true">·</span>
+
+        <span>
+          {{ article.reading_minutes }}
+          {{ 'دقیقه مطالعه'
+            if interface_is_fa
+            else 'min read' }}
+        </span>
+
+      {% endif %}
+
+    </div>
+
+
+    <!-- Continue reading -->
+    <div
+      lang="{{ lang }}"
+      dir="{{ 'rtl' if interface_is_fa else 'ltr' }}"
+      class="mt-3"
+    >
+
+      <a
+        href="{{ article_url }}"
+        class="inline-flex items-center gap-2 rounded
+              text-sm font-semibold text-teal-800
+              underline-offset-4
+              hover:underline
+              focus-visible:outline-2
+              focus-visible:outline-offset-4
+              focus-visible:outline-teal-700
+              transition-all duration-200
+              hover:gap-3
+              motion-reduce:transition-none"
+      >
+
+        {{ 'ادامهٔ مطلب'
+          if interface_is_fa
+          else 'Continue reading' }}
+
+        <span aria-hidden="true">
+          {{ '←' if interface_is_fa else '→' }}
+        </span>
+
+      </a>
+
+    </div>
   </div>
-
 </article>

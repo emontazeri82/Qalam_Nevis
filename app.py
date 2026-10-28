@@ -115,7 +115,14 @@ def article_detail(lang: str, slug: str):
         section=section,
         demo=True,
     )
+@app.route("/<lang>/login")
+def login(lang):
+    return render_template("auth/login.html", lang=lang)
 
+
+@app.route("/<lang>/register")
+def register(lang):
+    return render_template("auth/register.html", lang=lang)
 
 if __name__ == "__main__":
     app.run(debug=True)
