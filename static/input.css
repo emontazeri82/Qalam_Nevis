@@ -1,0 +1,37 @@
+@import "tailwindcss" source(none);
+@source "../templates";
+
+/* The compiled CSS is served from /static/tailwind.css, so font URLs must be
+   relative to that file (static/), not to this source file. */
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/Inter.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("fonts/Vazirmatn.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Inter", "Vazirmatn", sans-serif;
+}
+
+/* Persian pages use Vazirmatn first. */
+@layer base {
+  [lang="fa"] {
+    --font-sans: "Vazirmatn", "Inter", sans-serif;
+    font-family: var(--font-sans);
+  }
+
+  [lang="en"] {
+    --font-sans: "Inter", "Vazirmatn", sans-serif;
+    font-family: var(--font-sans);
+  }
+}

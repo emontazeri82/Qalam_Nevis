@@ -1,0 +1,147 @@
+{# One reusable article card.
+   Required: article, lang, article_url
+#}
+
+{% set interface_is_fa = lang == 'fa' %}
+{% set article_is_fa = article.language == 'fa' %}
+
+<article
+  data-reveal
+  class="min-w-0 border-b border-stone-300 py-6"
+>
+
+  <!-- Original title, author, image, and excerpt -->
+  <div
+    lang="{{ article.language }}"
+    dir="{{ 'rtl' if article_is_fa else 'ltr' }}"
+    class="flow-root"
+  >
+
+    {% if article.image %}
+      <a
+        href="{{ article_url }}"
+        aria-label="{{ article.title }}"
+        class="group mb-3 block w-24 overflow-hidden rounded-sm
+               border border-stone-200 bg-stone-100
+               focus-visible:outline-2
+               focus-visible:outline-offset-4
+               focus-visible:outline-teal-700
+               {{ 'float-right ml-4' if article_is_fa
+                  else 'float-left mr-4' }}"
+      >
+        <img
+          src="{{ url_for('static', filename=article.image) }}"
+          alt=""
+          width="192"
+          height="224"
+          loading="lazy"
+          decoding="async"
+          class="h-28 w-full object-cover object-center
+                 transition-transform duration-300
+                 group-hover:scale-105
+                 motion-reduce:transform-none
+                 motion-reduce:transition-none"
+        >
+      </a>
+    {% endif %}
+
+
+    <!-- Article title -->
+    <h2
+      class="text-xl leading-relaxed text-slate-900
+             {{ 'font-semibold' if article_is_fa else 'font-serif' }}"
+    >
+      <a
+        href="{{ article_url }}"
+        class="rounded underline-offset-4
+               transition-colors
+               hover:text-teal-800
+               hover:underline
+               motion-reduce:transition-none
+               focus-visible:outline-2
+               focus-visible:outline-offset-4
+               focus-visible:outline-teal-700"
+      >
+        {{ article.title }}
+      </a>
+    </h2>
+
+
+    <!-- Author -->
+    <p class="mt-2 text-sm font-medium leading-relaxed text-teal-800">
+      <bdi>{{ article.author }}</bdi>
+    </p>
+
+
+    <!-- Excerpt -->
+    <p class="mt-3 text-base leading-8 text-slate-700">
+      {{ article.excerpt }}
+    </p>
+
+  </div>
+
+
+  <!-- Published date and reading time -->
+  <div
+    lang="{{ lang }}"
+    dir="{{ 'rtl' if interface_is_fa else 'ltr' }}"
+    class="mt-5 flex flex-wrap items-center
+           gap-x-2 gap-y-1 text-xs text-slate-500"
+  >
+
+    <span>
+      {{ 'انتشار:' if interface_is_fa else 'Published:' }}
+    </span>
+
+    <time datetime="{{ article.date }}" dir="ltr">
+      {{ article.date }}
+    </time>
+
+
+    {% if article.reading_minutes %}
+
+      <span aria-hidden="true">·</span>
+
+      <span>
+        {{ article.reading_minutes }}
+        {{ 'دقیقه مطالعه'
+           if interface_is_fa
+           else 'min read' }}
+      </span>
+
+    {% endif %}
+
+  </div>
+
+
+  <!-- Continue reading -->
+  <div
+    lang="{{ lang }}"
+    dir="{{ 'rtl' if interface_is_fa else 'ltr' }}"
+    class="mt-3"
+  >
+
+    <a
+      href="{{ article_url }}"
+      class="inline-flex items-center gap-2 rounded
+             text-sm font-semibold text-teal-800
+             underline-offset-4
+             hover:underline
+             focus-visible:outline-2
+             focus-visible:outline-offset-4
+             focus-visible:outline-teal-700"
+    >
+
+      {{ 'ادامهٔ مطلب'
+         if interface_is_fa
+         else 'Continue reading' }}
+
+      <span aria-hidden="true">
+        {{ '←' if interface_is_fa else '→' }}
+      </span>
+
+    </a>
+
+  </div>
+
+</article>

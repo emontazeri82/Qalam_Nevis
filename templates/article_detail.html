@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% set fa = lang == 'fa' %}
+{% set article_is_fa = article.language == 'fa' %}
+
+{% set back_labels = {
+  'stories': ('بازگشت به داستان‌ها', 'Back to Stories'),
+  'reports': ('بازگشت به گزارش‌ها', 'Back to Reports'),
+  'criticism': ('بازگشت به نقدها', 'Back to Criticism'),
+  'archive': ('بازگشت به آرشیو', 'Back to Archive')
+} %}
+
+{% set back_label = back_labels[section][0 if fa else 1] %}
+{% set back_url = url_for(section, lang=lang) %}
+
+<article class="mx-auto max-w-2xl">
+
+  <!-- Navigation follows the interface language -->
+  <a
+    href="{{ back_url }}"
+    class="rounded text-sm text-teal-800 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-700"
+  >
+    {{ back_label }}
+  </a>
+
+  {% if demo %}
+    <p class="mt-6 text-xs text-amber-800">
+      {{ 'مطلب نمونه برای آزمایش طراحی' if fa
+         else 'Demo article for testing the design' }}
+    </p>
+  {% endif %}
+
+  <header
+    data-reveal
+    class="mt-5 border-b border-stone-300 pb-7"
+  >
+    <!-- Title preserves the original article language -->
+    <h1
+      lang="{{ article.language }}"
+      dir="{{ 'rtl' if article_is_fa else 'ltr' }}"
+      class="text-3xl leading-relaxed text-slate-900 sm:text-5xl
+        {{ 'font-medium' if article_is_fa else 'font-serif' }}"
+    >
+      {{ article.title }}
+    </h1>
+
+    <div class="mt-5 flex flex-wrap items-center gap-3 text-sm text-slate-600">
+      <span>
+        {{ 'نوشتهٔ' if fa else 'By' }}
+        <bdi lang="{{ article.language }}">
+          {{ article.author }}
+        </bdi>
+      </span>
+
+      <span aria-hidden="true">·</span>
+
+      <time datetime="{{ article.date }}" dir="ltr">
+        {{ article.date }}
+      </time>
+
+      {% if article.reading_minutes %}
+        <span aria-hidden="true">·</span>
+
+        <span>
+          {{ article.reading_minutes }}
+          {{ 'دقیقه مطالعه' if fa else 'min read' }}
+        </span>
+      {% endif %}
+
+      <span class="rounded-full border border-stone-300 px-3 py-1 text-xs">
+        {{ ('فارسی' if article_is_fa else 'انگلیسی') if fa
+           else ('Farsi' if article_is_fa else 'English') }}
+      </span>
+    </div>
+  </header>
+
+  <!-- Optional article image -->
+  {% if article.image %}
+    <img
+      src="{{ url_for('static', filename=article.image) }}"
+      alt="{{ article.image_alt | default('') }}"
+      class="mt-8 h-auto max-h-96 w-full rounded-sm object-contain"
+      decoding="async"
+    >
+  {% endif %}
+
+  <!-- Original article content; no automatic translation -->
+  <div
+    lang="{{ article.language }}"
+    dir="{{ 'rtl' if article_is_fa else 'ltr' }}"
+    class="mt-8 space-y-6 text-lg leading-loose text-slate-700"
+  >
+    {% for paragraph in article.paragraphs %}
+      <p>{{ paragraph }}</p>
+    {% endfor %}
+  </div>
+
+  <footer class="mt-12 border-t border-stone-300 pt-6">
+    <a
+      href="{{ back_url }}"
+      class="inline-flex items-center gap-2 rounded text-sm font-medium text-teal-800 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-700"
+    >
+      <span aria-hidden="true">{{ '→' if fa else '←' }}</span>
+      {{ back_label }}
+    </a>
+  </footer>
+
+</article>
+{% endblock %}

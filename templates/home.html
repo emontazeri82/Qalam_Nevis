@@ -1,0 +1,669 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% set fa = lang == 'fa' %}
+
+<style>
+  /* Styles apply only to this homepage. */
+  .pd-home {
+    --ink: #20362f;
+    --muted: #59665d;
+    --line: #c9c6b6;
+    color: var(--ink);
+    background: #f6f3e9;
+    padding: clamp(20px, 4vw, 48px);
+    isolation: isolate;
+  }
+
+  .pd-home * {
+    box-sizing: border-box;
+  }
+
+  .pd-home h1,
+  .pd-home h2,
+  .pd-home p {
+    margin: 0;
+  }
+
+  .pd-home .display {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+  }
+
+  html:lang(fa) .pd-home .display {
+    font-family: "Vazirmatn", sans-serif;
+    font-weight: 500;
+    letter-spacing: normal;
+  }
+
+  .pd-home .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .pd-home .edition {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .pd-home .rule {
+    height: 1px;
+    margin-block: 20px 32px;
+    background: var(--line);
+  }
+
+  .pd-home .opening {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 3fr)
+      minmax(0, 4fr)
+      minmax(0, 3fr);
+    gap: clamp(20px, 3vw, 42px);
+    align-items: start;
+  }
+
+  .pd-home .opening > * {
+    min-width: 0;
+  }
+
+  .pd-home .photo {
+    position: relative;
+    overflow: hidden;
+    background: #263d36;
+    border: 1px solid #d6d0c2
+  }
+
+  .pd-home img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pd-home .story-label {
+    margin-block-end: 12px;
+  }
+
+  .pd-home .story-photo {
+    height: 340px;
+    margin-block-start: 28px;
+  }
+
+  .pd-home .story-photo img {
+    object-position: 62% center;
+  }
+
+  .pd-home .story-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      transparent 40%,
+      rgba(16, 30, 22, 0.8)
+    );
+    pointer-events: none;
+  }
+
+  .pd-home .story-photo h2 {
+    position: absolute;
+    z-index: 1;
+    inset-inline-start: 18px;
+    inset-block-end: 24px;
+    color: #fff9ed;
+    font-size: clamp(32px, 4vw, 48px);
+    text-shadow: 0 2px 16px #000;
+  }
+
+  .pd-home .intro {
+    padding-block: 7px;
+  }
+
+  .pd-home h1 {
+    font-size: clamp(36px, 4.2vw, 60px);
+    line-height: 1.12;
+  }
+
+  html:lang(fa) .pd-home h1 {
+    font-size: clamp(30px, 3.4vw, 44px);
+    line-height: 1.65;
+  }
+
+  .pd-home .note {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.95;
+  }
+
+  .pd-home .intro .note {
+    margin-block-start: 22px;
+  }
+
+  .pd-home .verse {
+    margin-block-start: 28px;
+    padding-inline-start: 18px;
+    border-inline-start: 1px solid #a18d5b;
+    font-size: 20px;
+    line-height: 1.85;
+  }
+
+  .pd-home .verse small {
+    display: block;
+    margin-block-start: 12px;
+    color: var(--muted);
+    font-family: var(--font-sans, sans-serif);
+    font-size: 10px;
+    letter-spacing: normal;
+  }
+
+  .pd-home .reports {
+    margin-block-start: 115px;
+    scroll-margin-top: 24px;
+  }
+
+  .pd-home .report-photo {
+    height: 205px;
+  }
+
+  .pd-home .image-label {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    padding: 36px 16px 14px;
+    color: white;
+    background: linear-gradient(
+      transparent,
+      rgba(16, 27, 22, 0.95)
+    );
+    font-size: 28px;
+  }
+
+  .pd-home .report-note {
+    margin-block-start: 18px;
+    padding-inline-start: 14px;
+    border-inline-start: 1px solid var(--line);
+  }
+
+  .pd-home .report-note .note {
+    margin-block-start: 8px;
+  }
+
+  .pd-home .section-index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-block: 36px;
+    padding-block: 13px;
+    border-block: 1px solid var(--line);
+    font-size: 12px;
+  }
+
+  .pd-home a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .pd-home .section-index a {
+    padding-block: 5px;
+    text-underline-offset: 5px;
+  }
+
+  .pd-home a:hover {
+    text-decoration: underline;
+  }
+
+  .pd-home a:focus-visible {
+    outline: 2px solid #14675c;
+    outline-offset: 5px;
+  }
+
+  .pd-home .lower {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 5fr)
+      minmax(0, 6fr);
+    gap: 36px;
+    align-items: start;
+  }
+
+  .pd-home .criticism {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 2fr)
+      minmax(0, 3fr);
+    gap: 22px;
+    align-items: center;
+    scroll-margin-top: 24px;
+  }
+
+  .pd-home .critic-photo {
+    height: 260px;
+  }
+
+  .pd-home .critic-photo img {
+    object-position: 55% center;
+  }
+
+  .pd-home .criticism h2 {
+    margin-block: 7px 16px;
+    font-size: 30px;
+    line-height: 1.5;
+  }
+
+  .pd-home .question {
+    margin-block-end: 16px;
+    font-size: 21px;
+    line-height: 1.65;
+  }
+
+  .pd-home .archive {
+    margin-block-start: 45px;
+    scroll-margin-top: 24px;
+  }
+
+  .pd-home .archive .photo {
+    display: flex;
+    min-height: 230px;
+    align-items: center;
+    padding: 28px;
+  }
+
+  .pd-home .archive img {
+    position: absolute;
+    inset: 0;
+    object-position: 65% center;
+  }
+
+  .pd-home .archive .shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(16, 34, 27, 0.96),
+      rgba(16, 34, 27, 0.6)
+    );
+  }
+
+  html:lang(fa) .pd-home .archive .shade {
+    background: linear-gradient(
+      270deg,
+      rgba(16, 34, 27, 0.96),
+      rgba(16, 34, 27, 0.6)
+    );
+  }
+
+  .pd-home .archive-copy {
+    position: relative;
+    max-width: 290px;
+    color: #faf6e9;
+  }
+
+  .pd-home .archive h2 {
+    margin-block: 8px 14px;
+    font-size: 36px;
+    line-height: 1.4;
+  }
+
+  .pd-home .archive .eyebrow {
+    color: #e5cd92;
+  }
+
+  .pd-home .archive .note {
+    color: #eee9db;
+  }
+
+  .pd-home .closing {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 28px;
+    margin-block-start: 38px;
+    padding-block-start: 20px;
+    border-block-start: 1px solid var(--line);
+  }
+
+  #stories {
+    scroll-margin-top: 24px;
+  }
+
+  @media (max-width: 850px) {
+    .pd-home .opening {
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1.25fr);
+    }
+
+    .pd-home .reports {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      align-items: center;
+      margin-block-start: 0;
+    }
+
+    .pd-home .report-note {
+      margin: 0;
+    }
+
+    .pd-home .lower {
+      grid-template-columns: 1fr;
+    }
+
+    .pd-home .archive {
+      margin-block-start: 0;
+    }
+
+    .pd-home .critic-photo {
+      max-width: 230px;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .pd-home .opening {
+      grid-template-columns: 1fr;
+    }
+
+    .pd-home .intro {
+      grid-row: 1;
+    }
+
+    .pd-home .story-photo {
+      height: 240px;
+      max-width: 78%;
+      margin: 0;
+    }
+
+    .pd-home .story-photo h2 {
+      font-size: 40px;
+    }
+
+    .pd-home .reports {
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-inline-start: 12%;
+    }
+
+    .pd-home .report-photo {
+      height: 175px;
+    }
+
+    .pd-home .criticism {
+      gap: 16px;
+    }
+
+    .pd-home .critic-photo {
+      height: 230px;
+    }
+
+    .pd-home .criticism h2 {
+      font-size: 25px;
+    }
+
+    .pd-home .question {
+      font-size: 18px;
+    }
+
+    .pd-home .archive .photo {
+      min-height: 240px;
+      padding: 23px;
+    }
+
+    .pd-home .closing {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+  }
+</style>
+
+<div class="pd-home" id="pd-home">
+
+  <!-- Small editorial heading -->
+  <div class="edition eyebrow">
+    <span>
+      {{ 'میز نشر / جایی برای خواندن' if fa
+         else 'PUBLISH DESK / A PLACE TO READ' }}
+    </span>
+
+    <span>
+      {{ 'داستان · گزارش · نقد · آرشیو' if fa
+         else 'STORIES · REPORTS · CRITICISM · ARCHIVE' }}
+    </span>
+  </div>
+
+  <div class="rule" aria-hidden="true"></div>
+
+  <!-- Opening composition -->
+  <div class="opening">
+
+    <!-- Stories -->
+    <section
+      id="stories"
+      data-reveal
+      aria-labelledby="stories-heading"
+    >
+      <p class="story-label eyebrow">
+        {{ '۰۱ / روایت، خاطره، خیال' if fa
+           else '01 / FICTION, MEMORY, IMAGINATION' }}
+      </p>
+
+      <div class="photo story-photo">
+        <img
+          src="{{ url_for('static', filename='images/stories.jpg') }}"
+          alt="{{ 'دفتر باز و قلم کنار پنجره' if fa
+                 else 'An open notebook and pen beside a window' }}"
+          decoding="async"
+        >
+
+        <h2 id="stories-heading" class="display">
+          {{ 'داستان‌ها' if fa else 'Stories' }}
+        </h2>
+      </div>
+    </section>
+
+    <!-- Introduction and original verse -->
+    <section
+      class="intro"
+      data-reveal
+      aria-labelledby="home-heading"
+    >
+      <h1 id="home-heading" class="display">
+        {% if fa %}
+          میانِ سطرها،<br>
+          کمی بمانیم.
+        {% else %}
+          Between<br>
+          the lines,<br>
+          stay a while.
+        {% endif %}
+      </h1>
+
+      <p class="note">
+        {{ 'داستان از جزئیات آغاز می‌شود: صدایی پشت در، سفری ناتمام، یا خاطره‌ای که شکل تازه‌ای پیدا کرده است. اینجا برای روایت‌های واقعی و خیالی جا هست.'
+           if fa
+           else 'A story begins in particulars: a voice at the door, an unfinished journey, a memory taking another shape. There is room here for lives both lived and imagined.' }}
+      </p>
+
+      <div class="verse display">
+        {% if fa %}
+          پنجره باز بود؛<br>
+          باد، پیش از من<br>
+          به صفحه رسید.
+        {% else %}
+          The window was open.<br>
+          The wind reached the page<br>
+          before I did.
+        {% endif %}
+
+        <small>
+          {{ 'چند سطرِ تازه برای میز نشر' if fa
+             else 'Original lines for Publish Desk' }}
+        </small>
+      </div>
+    </section>
+
+    <!-- Reports -->
+    <section
+      id="reports"
+      class="reports"
+      data-reveal
+      aria-labelledby="reports-heading"
+    >
+      <div class="photo report-photo">
+        <img
+          src="{{ url_for('static', filename='images/Reports.jpg') }}"
+          alt="{{ 'دوربین و دفتر رو به خیابان' if fa
+                 else 'A camera and notebook overlooking a street' }}"
+          loading="lazy"
+          decoding="async"
+        >
+
+        <h2 id="reports-heading" class="image-label display">
+          {{ 'گزارش‌ها' if fa else 'Reports' }}
+        </h2>
+      </div>
+
+      <div class="report-note">
+        <p class="eyebrow">
+          {{ '۰۲ / آنچه از نزدیک می‌بینیم' if fa
+             else '02 / SEEN AT CLOSE RANGE' }}
+        </p>
+
+        <p class="note">
+          {{ 'آن‌سوی تیترها، آدم‌ها و جزئیات قرار دارند. گزارش‌ها با مشاهده، گفت‌وگو و زمینه، رویدادها را دقیق‌تر دنبال می‌کنند.'
+             if fa
+             else 'Beyond the headline are people and particulars. Reporting follows events through observation, conversations, and the context a first impression leaves out.' }}
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Links to sections on this page -->
+  <nav
+    class="section-index"
+    aria-label="{{ 'بخش‌های این صفحه' if fa
+                   else 'Sections on this page' }}"
+  >
+    <a href="#stories">
+      {{ 'داستان‌ها' if fa else 'Stories' }}
+    </a>
+
+    <a href="#reports">
+      {{ 'گزارش‌ها' if fa else 'Reports' }}
+    </a>
+
+    <a href="#criticism">
+      {{ 'نقد' if fa else 'Criticism' }}
+    </a>
+
+    <a href="#archive">
+      {{ 'آرشیو' if fa else 'Archive' }}
+    </a>
+  </nav>
+
+  <!-- Second composition -->
+  <div class="lower">
+
+    <!-- Criticism -->
+    <section
+      id="criticism"
+      class="criticism"
+      data-reveal
+      aria-labelledby="criticism-heading"
+    >
+      <div class="photo critic-photo">
+        <img
+          src="{{ url_for('static', filename='images/Criticism.jpg') }}"
+          alt="{{ 'کتاب حاشیه‌نویسی‌شده و عینک' if fa
+                 else 'An annotated book and reading glasses' }}"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+
+      <div>
+        <p class="eyebrow">
+          {{ '۰۳ / در حاشیهٔ خواندن' if fa
+             else '03 / IN THE MARGINS' }}
+        </p>
+
+        <h2 id="criticism-heading" class="display">
+          {{ 'نقد' if fa else 'Criticism' }}
+        </h2>
+
+        <p class="question display">
+          {{ 'کتاب بسته شد. کدام پرسش باز ماند؟' if fa
+             else 'The book closes. Which question stays open?' }}
+        </p>
+
+        <p class="note">
+          {{ 'نگاهی به واژه‌ها، ساختارها و استدلال‌ها؛ برداشت‌هایی که با دلیل همراه‌اند و برای مخالفت جا می‌گذارند.'
+             if fa
+             else 'Attention to words, forms, and arguments. Interpretations with reasons behind them—and space for disagreement.' }}
+        </p>
+      </div>
+    </section>
+
+    <!-- Archive -->
+    <section
+      id="archive"
+      class="archive"
+      data-reveal
+      aria-labelledby="archive-heading"
+    >
+      <div class="photo">
+        <img
+          src="{{ url_for('static', filename='images/Archieve.jpg') }}"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        >
+
+        <div class="shade" aria-hidden="true"></div>
+
+        <div class="archive-copy">
+          <p class="eyebrow">
+            {{ '۰۴ / نوشته‌های پیشین' if fa
+               else '04 / EARLIER PAGES' }}
+          </p>
+
+          <h2 id="archive-heading" class="display">
+            {{ 'آرشیو' if fa else 'The archive' }}
+          </h2>
+
+          <p class="note">
+            {{ 'نوشته‌ای که از یاد نرفته، یا نوشته‌ای که هنوز نخوانده‌ایم. داستان‌ها، گزارش‌ها و نقدهای پیشین در این بخش گرد هم می‌آیند.'
+               if fa
+               else 'Something remembered, or something still unread. Earlier stories, reports, and criticism gathered in one place.' }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Closing note -->
+  <section
+    class="closing"
+    data-reveal
+    aria-labelledby="about-heading"
+  >
+    <h2 id="about-heading" class="eyebrow">
+      {{ 'یادداشتی دربارهٔ میز نشر' if fa
+         else 'A NOTE ABOUT PUBLISH DESK' }}
+    </h2>
+
+    <p class="note">
+      {{ 'فضایی برای نوشته‌های فارسی و انگلیسی. نویسندگان تأییدشده آثار خود را برای بررسی می‌فرستند؛ نوشته‌های منتشرشده برای همه خواندنی‌اند.'
+         if fa
+         else 'A space for writing in English and Farsi. Approved authors submit work for editorial review; published pieces are open to every reader.' }}
+    </p>
+  </section>
+
+</div>
+
+{% endblock %}

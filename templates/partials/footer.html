@@ -1,0 +1,28 @@
+<footer class="border-t-2 border-amber-400/70 bg-linear-to-r from-slate-950 via-teal-950 to-slate-950 font-sans">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-8">
+
+    <div class="flex items-center gap-3">
+      <span
+        aria-hidden="true"
+        class="h-2 w-2 rounded-full bg-amber-300"
+      ></span>
+
+      <p class="text-sm font-semibold text-amber-200">
+        Publish Desk
+      </p>
+    </div>
+
+    <p class="text-xs leading-relaxed text-teal-100/80">
+      {{ 'خانه‌ای برای داستان‌ها و اندیشه‌ها' if lang == 'fa'
+         else 'A home for stories and ideas' }}
+    </p>
+
+    <a
+      href="{{ url_for('home', lang=lang) }}"
+      class="rounded-full border border-teal-300/20 px-3 py-1.5 text-xs font-medium text-teal-200 transition-colors hover:border-teal-300/50 hover:bg-teal-300/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-300"
+    >
+      {{ 'بازگشت به خانه' if lang == 'fa' else 'Back to home' }}
+    </a>
+
+  </div>
+</footer>

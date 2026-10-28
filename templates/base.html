@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html
+  lang="{{ lang }}"
+  dir="{{ 'rtl' if lang == 'fa' else 'ltr' }}"
+>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Publish Desk</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='tailwind.css') }}?v=2"
+    >
+  </head>
+  <script
+    type="module"
+    src="{{ url_for('static', filename='js/animation.js') }}"
+  ></script>
+  <body class="flex flex-col min-h-screen bg-linear-to-br from-stone-50 via-teal-50 to-amber-50 font-sans text-slate-900">
+    {% include "partials/navbar.html" %}
+
+    <main class="mx-auto w-full max-w-6xl flex-1 px-5 py-12">
+      {% block content %}{% endblock %}
+    </main>
+    {% include "partials/footer.html" %}
+  </body>
+</html>
