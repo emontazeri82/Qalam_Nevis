@@ -1,42 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}Sign In | Qalam Nevis{% endblock %}
+{% block title %}
+  {{ 'ورود | قلم نویس' if lang == 'fa' else 'Sign In | Qalam Nevis' }}
+{% endblock %}
 
 {% block content %}
 
-<main
-  class="relative min-h-[calc(100vh-5rem)] overflow-hidden
-         bg-gradient-to-br from-stone-100 via-white to-teal-50"
+<div
+  class="relative overflow-hidden rounded-3xl"
+  lang="{{ lang }}"
+  dir="{{ 'rtl' if lang == 'fa' else 'ltr' }}"
 >
 
   <!-- Decorative page glow -->
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute -left-32 top-20
-           h-80 w-80 rounded-full bg-teal-200/30
-           blur-3xl"
+    class="pointer-events-none absolute -left-20 top-10
+           h-56 w-56 rounded-full bg-teal-200/30 blur-3xl"
   ></div>
 
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute -right-32 bottom-10
-           h-96 w-96 rounded-full bg-amber-100/40
-           blur-3xl"
+    class="pointer-events-none absolute -right-20 bottom-0
+           h-64 w-64 rounded-full bg-amber-100/40 blur-3xl"
   ></div>
 
 
   <!-- Page container -->
   <div
     class="relative z-10 mx-auto flex
-           min-h-[calc(100vh-5rem)] max-w-6xl
-           items-center justify-center
-           px-4 py-12 sm:px-6 lg:px-8"
+           max-w-6xl items-center justify-center
+           px-2 py-4 sm:px-4"
   >
 
     <!-- Login card -->
     <div
       class="login-card-enter
-             grid w-full max-w-4xl overflow-hidden
+             grid w-full max-w-3xl overflow-hidden
              rounded-3xl border border-white/60
              bg-white/95
              shadow-[0_30px_80px_-25px_rgba(15,23,42,0.35)]
@@ -44,19 +44,18 @@
              lg:grid-cols-2"
     >
 
-
       <!-- =====================================================
            LEFT SIDE — QALAM NEVIS BRAND
       ====================================================== -->
 
       <section
         class="relative overflow-hidden
-               bg-gradient-to-br
+               bg-linear-to-br
                from-teal-950 via-teal-900 to-slate-950
-               px-8 py-12 text-stone-100
-               sm:px-10
-               lg:flex lg:min-h-[620px]
-               lg:flex-col lg:justify-between lg:p-12"
+               px-6 py-8 text-stone-100
+               sm:px-8
+               lg:flex lg:flex-col
+               lg:justify-between lg:p-8"
       >
 
         <!-- Decorative circles -->
@@ -100,14 +99,15 @@
             <p
               lang="fa"
               dir="rtl"
-              class="text-4xl font-semibold leading-relaxed
-                     text-white"
+              class="text-3xl font-semibold leading-relaxed text-white"
             >
               قلم نویس
             </p>
 
             <p
-              class="mt-1 font-serif text-lg
+              lang="en"
+              dir="ltr"
+              class="mt-1 font-serif text-base
                      tracking-wide text-teal-100"
             >
               Qalam Nevis
@@ -117,7 +117,7 @@
 
 
           <!-- Editorial introduction -->
-          <div class="mt-12 max-w-sm">
+          <div class="mt-8 max-w-sm">
 
             <div class="flex items-center gap-3">
 
@@ -127,33 +127,47 @@
               ></span>
 
               <p
-                class="text-xs font-semibold uppercase
-                       tracking-[0.22em] text-teal-300"
+                class="text-xs font-semibold
+                       {{ 'tracking-normal' if lang == 'fa'
+                          else 'uppercase tracking-[0.22em]' }}
+                       text-teal-300"
               >
-                Editorial Desk
+                {{ 'میز تحریریه' if lang == 'fa'
+                   else 'Editorial Desk' }}
               </p>
 
             </div>
 
 
             <h1
-              class="mt-5 font-serif text-4xl
+              class="mt-4 font-serif text-2xl
                      leading-tight text-white
-                     sm:text-5xl"
+                     sm:text-3xl"
             >
-              A quiet place
-              <br>
-              for serious writing.
+              {% if lang == 'fa' %}
+                مکانی آرام
+                <br>
+                برای نوشتن جدی.
+              {% else %}
+                A quiet place
+                <br>
+                for serious writing.
+              {% endif %}
             </h1>
 
 
             <p
-              class="mt-6 max-w-xs
+              class="mt-4 max-w-xs
                      text-sm leading-7
                      text-teal-100/80"
             >
-              Write, edit, and prepare your work
-              for publication at Qalam Nevis.
+              {% if lang == 'fa' %}
+                نوشته‌های خود را بنویسید، ویرایش کنید
+                و برای انتشار در قلم نویس آماده سازید.
+              {% else %}
+                Write, edit, and prepare your work
+                for publication at Qalam Nevis.
+              {% endif %}
             </p>
 
           </div>
@@ -163,7 +177,7 @@
 
         <!-- Bottom left message -->
         <div
-          class="relative z-10 mt-12 hidden
+          class="relative z-10 mt-8 hidden
                  border-t border-teal-700/50
                  pt-6 lg:block"
         >
@@ -199,8 +213,13 @@
               class="text-sm leading-6
                      text-teal-100/70"
             >
-              Private access for Qalam Nevis
-              writers and administrators.
+              {% if lang == 'fa' %}
+                دسترسی خصوصی برای نویسندگان
+                و مدیران قلم نویس.
+              {% else %}
+                Private access for Qalam Nevis
+                writers and administrators.
+              {% endif %}
             </p>
 
           </div>
@@ -218,9 +237,9 @@
       <section
         class="flex items-center
                bg-white/95
-               px-6 py-10
-               sm:px-10 sm:py-12
-               lg:px-12"
+               px-6 py-8
+               sm:px-8
+               lg:px-8"
       >
 
         <div class="mx-auto w-full max-w-sm">
@@ -230,28 +249,36 @@
           <div>
 
             <p
-              class="text-xs font-semibold uppercase
-                     tracking-[0.18em]
+              class="text-xs font-semibold
+                     {{ 'tracking-normal' if lang == 'fa'
+                        else 'uppercase tracking-[0.18em]' }}
                      text-teal-700"
             >
-              Welcome back
+              {{ 'خوش آمدید' if lang == 'fa'
+                 else 'Welcome back' }}
             </p>
 
 
             <h2
-              class="mt-3 font-serif
-                     text-3xl text-slate-900"
+              class="mt-2 font-serif
+                     text-2xl text-slate-900"
             >
-              Sign in to your account
+              {{ 'وارد حساب کاربری خود شوید' if lang == 'fa'
+                 else 'Sign in to your account' }}
             </h2>
 
 
             <p
-              class="mt-3 text-sm
+              class="mt-2 text-sm
                      leading-6 text-slate-500"
             >
-              Enter your credentials to access the
-              Qalam Nevis editorial desk.
+              {% if lang == 'fa' %}
+                برای ورود به میز تحریریه قلم نویس،
+                اطلاعات حساب خود را وارد کنید.
+              {% else %}
+                Enter your credentials to access the
+                Qalam Nevis editorial desk.
+              {% endif %}
             </p>
 
           </div>
@@ -265,7 +292,7 @@
           <form
             action="#"
             method="post"
-            class="mt-8 space-y-6"
+            class="mt-6 space-y-4"
           >
 
 
@@ -277,7 +304,8 @@
                 class="block text-sm font-semibold
                        text-slate-700"
               >
-                Email address
+                {{ 'آدرس ایمیل' if lang == 'fa'
+                   else 'Email address' }}
               </label>
 
 
@@ -286,8 +314,10 @@
                 <!-- Email icon -->
                 <div
                   class="pointer-events-none
-                         absolute inset-y-0 left-0
-                         flex items-center pl-4
+                         absolute inset-y-0
+                         {{ 'right-0 pr-4' if lang == 'fa'
+                            else 'left-0 pl-4' }}
+                         flex items-center
                          text-slate-400"
                 >
 
@@ -322,12 +352,15 @@
                   name="email"
                   type="email"
                   autocomplete="email"
-                  placeholder="writer@example.com"
+                  placeholder="{{ 'writer@example.com' }}"
                   required
+                  dir="ltr"
                   class="block w-full rounded-xl
                          border border-stone-300
                          bg-stone-50
-                         py-3 pl-12 pr-4
+                         py-2.5
+                         {{ 'pr-12 pl-4 text-right' if lang == 'fa'
+                            else 'pl-12 pr-4 text-left' }}
                          text-sm text-slate-900
                          placeholder:text-slate-400
                          transition-all duration-200
@@ -348,17 +381,15 @@
             <!-- Password -->
             <div>
 
-              <div
-                class="flex items-center
-                       justify-between"
-              >
+              <div class="flex items-center justify-between">
 
                 <label
                   for="password"
                   class="block text-sm font-semibold
                          text-slate-700"
                 >
-                  Password
+                  {{ 'رمز عبور' if lang == 'fa'
+                     else 'Password' }}
                 </label>
 
 
@@ -374,7 +405,9 @@
                          focus-visible:outline-offset-4
                          focus-visible:outline-teal-700"
                 >
-                  Forgot password?
+                  {{ 'رمز عبور را فراموش کرده‌اید؟'
+                     if lang == 'fa'
+                     else 'Forgot password?' }}
                 </a>
 
               </div>
@@ -385,8 +418,10 @@
                 <!-- Lock icon -->
                 <div
                   class="pointer-events-none
-                         absolute inset-y-0 left-0
-                         flex items-center pl-4
+                         absolute inset-y-0
+                         {{ 'right-0 pr-4' if lang == 'fa'
+                            else 'left-0 pl-4' }}
+                         flex items-center
                          text-slate-400"
                 >
 
@@ -408,7 +443,7 @@
 
                     <path
                       stroke-linecap="round"
-                      d="M8 10V7a4 4 0 0 1 8 0v3"
+                      d="M8 10V7a4 4 4 0 0 1 8 0v3"
                     ></path>
                   </svg>
 
@@ -420,12 +455,16 @@
                   name="password"
                   type="password"
                   autocomplete="current-password"
-                  placeholder="Enter your password"
+                  placeholder="{{ 'رمز عبور خود را وارد کنید'
+                                  if lang == 'fa'
+                                  else 'Enter your password' }}"
                   required
                   class="block w-full rounded-xl
                          border border-stone-300
                          bg-stone-50
-                         py-3 pl-12 pr-12
+                         py-2.5
+                         {{ 'pr-12 pl-12 text-right' if lang == 'fa'
+                            else 'pl-12 pr-12 text-left' }}
                          text-sm text-slate-900
                          placeholder:text-slate-400
                          transition-all duration-200
@@ -441,11 +480,15 @@
                 <!-- Show password button -->
                 <button
                   type="button"
-                  aria-label="Show password"
-                  class="absolute inset-y-0 right-0
+                  aria-label="{{ 'نمایش رمز عبور'
+                                if lang == 'fa'
+                                else 'Show password' }}"
+                  class="absolute inset-y-0
+                         {{ 'left-0 rounded-l-xl'
+                            if lang == 'fa'
+                            else 'right-0 rounded-r-xl' }}
                          flex w-12 items-center
                          justify-center
-                         rounded-r-xl
                          text-slate-400
                          transition-colors
                          hover:text-teal-700
@@ -501,10 +544,12 @@
 
               <label
                 for="remember"
-                class="ml-2 text-sm
-                       text-slate-600"
+                class="{{ 'mr-2' if lang == 'fa' else 'ml-2' }}
+                       text-sm text-slate-600"
               >
-                Remember me
+                {{ 'مرا به خاطر بسپار'
+                   if lang == 'fa'
+                   else 'Remember me' }}
               </label>
 
             </div>
@@ -518,7 +563,7 @@
                      items-center justify-center
                      gap-2 rounded-xl
                      bg-teal-900
-                     px-4 py-3.5
+                     px-4 py-3
                      text-sm font-semibold
                      text-white
                      shadow-sm
@@ -533,16 +578,17 @@
                      motion-reduce:transition-none"
             >
 
-              Sign in
+              {{ 'ورود' if lang == 'fa' else 'Sign in' }}
 
               <span
                 aria-hidden="true"
-                class="transition-transform
-                       duration-200
-                       group-hover:translate-x-1
+                class="transition-transform duration-200
+                       {{ 'group-hover:-translate-x-1'
+                          if lang == 'fa'
+                          else 'group-hover:translate-x-1' }}
                        motion-reduce:transform-none"
               >
-                →
+                {{ '←' if lang == 'fa' else '→' }}
               </span>
 
             </button>
@@ -555,36 +601,34 @@
                CREATE ACCOUNT
           ================================================== -->
 
-          <div class="mt-7">
+          <div class="mt-5">
 
             <div class="flex items-center gap-4">
 
-              <div
-                class="h-px flex-1 bg-stone-200"
-              ></div>
+              <div class="h-px flex-1 bg-stone-200"></div>
 
               <span
                 class="whitespace-nowrap
                        text-xs text-slate-400"
               >
-                New to Qalam Nevis?
+                {{ 'تازه به قلم نویس پیوسته‌اید؟'
+                   if lang == 'fa'
+                   else 'New to Qalam Nevis?' }}
               </span>
 
-              <div
-                class="h-px flex-1 bg-stone-200"
-              ></div>
+              <div class="h-px flex-1 bg-stone-200"></div>
 
             </div>
 
 
             <a
               href="{{ url_for('register', lang=lang) }}"
-              class="mt-5 flex w-full
+              class="mt-4 flex w-full
                      items-center justify-center
                      rounded-xl
                      border border-teal-800
                      bg-white
-                     px-4 py-3.5
+                     px-4 py-3
                      text-sm font-semibold
                      text-teal-900
                      transition-all duration-200
@@ -597,7 +641,9 @@
                      motion-reduce:transform-none
                      motion-reduce:transition-none"
             >
-              Create an account
+              {{ 'ایجاد حساب کاربری'
+                 if lang == 'fa'
+                 else 'Create an account' }}
             </a>
 
           </div>
@@ -609,8 +655,8 @@
           ================================================== -->
 
           <div
-            class="mt-8 border-t
-                   border-stone-200 pt-6"
+            class="mt-6 border-t
+                   border-stone-200 pt-4"
           >
 
             <div
@@ -649,8 +695,13 @@
                 class="text-xs leading-5
                        text-slate-500"
               >
-                This area is reserved for approved
-                Qalam Nevis writers and administrators.
+                {% if lang == 'fa' %}
+                  این بخش مخصوص نویسندگان و مدیران
+                  تأییدشده قلم نویس است.
+                {% else %}
+                  This area is reserved for approved
+                  Qalam Nevis writers and administrators.
+                {% endif %}
               </p>
 
             </div>
@@ -658,7 +709,7 @@
 
 
             <!-- Return home -->
-            <div class="mt-6 text-center">
+            <div class="mt-4 text-center">
 
               <a
                 href="{{ url_for('home', lang=lang) }}"
@@ -678,13 +729,17 @@
                 <span
                   aria-hidden="true"
                   class="transition-transform duration-200
-                         group-hover:-translate-x-1
+                         {{ 'group-hover:translate-x-1'
+                            if lang == 'fa'
+                            else 'group-hover:-translate-x-1' }}
                          motion-reduce:transform-none"
                 >
-                  ←
+                  {{ '→' if lang == 'fa' else '←' }}
                 </span>
 
-                Return to Qalam Nevis
+                {{ 'بازگشت به قلم نویس'
+                   if lang == 'fa'
+                   else 'Return to Qalam Nevis' }}
 
               </a>
 
@@ -700,6 +755,6 @@
 
   </div>
 
-</main>
+</div>
 
 {% endblock %}
