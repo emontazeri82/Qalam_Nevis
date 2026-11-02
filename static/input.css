@@ -78,3 +78,15 @@
     animation: none;
   }
 }
+/* =========================================================
+   RICH TEXT EDITOR
+========================================================= */
+.article-rich-editor.is-empty::before {
+    content: attr(data-placeholder);
+    color: #cbd5e1;
+    pointer-events: none;
+}
+
+.article-rich-editor:focus {
+    outline: none;
+}

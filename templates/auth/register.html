@@ -381,7 +381,72 @@
             </div>
 
 
+            <!-- Username -->
+            <div>
 
+              <label
+                for="username"
+                class="block text-sm font-semibold text-slate-700"
+              >
+                {{ 'نام کاربری' if lang == 'fa' else 'Username' }}
+              </label>
+
+              <div class="relative mt-2">
+
+                <div
+                  class="pointer-events-none
+                        absolute inset-y-0
+                        {{ 'right-0 pr-4' if lang == 'fa'
+                            else 'left-0 pl-4' }}
+                        flex items-center
+                        text-slate-400"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    aria-hidden="true"
+                    class="h-5 w-5"
+                  >
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path
+                      stroke-linecap="round"
+                      d="M5 21v-2a7 7 0 0 1 14 0v2"
+                    ></path>
+                  </svg>
+                </div>
+
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  autocomplete="username"
+                  placeholder="{{ 'نام کاربری خود را انتخاب کنید'
+                                  if lang == 'fa'
+                                  else 'Choose a username' }}"
+                  required
+                  class="block w-full rounded-xl
+                        border border-stone-300
+                        bg-stone-50
+                        py-2.5
+                        {{ 'pr-12 pl-4 text-right'
+                            if lang == 'fa'
+                            else 'pl-12 pr-4 text-left' }}
+                        text-sm text-slate-900
+                        placeholder:text-slate-400
+                        transition-all duration-200
+                        hover:border-stone-400
+                        focus:border-teal-700
+                        focus:bg-white
+                        focus:outline-none
+                        focus:ring-4
+                        focus:ring-teal-700/10"
+                >
+
+              </div>
+
+            </div>
             <!-- Email -->
             <div>
 
