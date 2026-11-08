@@ -1,8 +1,9 @@
 <header class="border-t-4 border-amber-400 bg-teal-50 font-sans shadow-lg shadow-teal-950/10">
   <!-- Logo and language switch -->
   <div class="bg-linear-to-br from-teal-600 via-cyan-300 to-amber-600">
-    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-5 py-6 sm:px-8">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-start justify-between gap-8 px-5 py-6 sm:px-8">
 
+      <!-- Qalam Nevis brand -->
       <a
         href="{{ url_for('home', lang=lang) }}"
         class="group min-w-0 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-700"
@@ -20,52 +21,61 @@
           ></span>
 
           {{ 'خانه‌ای برای داستان‌ها و اندیشه‌ها' if lang == 'fa'
-             else 'A home for stories and ideas' }}
+            else 'A home for stories and ideas' }}
         </span>
       </a>
 
 
+      <!-- Language + Woman Life Freedom -->
+      <div class="relative flex flex-col items-end">
+
+        <!-- Language selector -->
+        <div class="flex flex-col items-end gap-2">
+
+          <span class="px-2 text-xs font-medium text-slate-600">
+            {{ 'زبان خود را انتخاب کنید' if lang == 'fa'
+              else 'Choose your language' }}
+          </span>
+
+          <nav
+            aria-label="{{ 'انتخاب زبان' if lang == 'fa' else 'Language selection' }}"
+            class="flex items-center gap-1 rounded-2xl border border-white bg-white/90 p-1.5 shadow-sm ring-1 ring-teal-900/10"
+          >
+            {% for code, label in [('en', 'English'), ('fa', 'فارسی')] %}
+              <a
+                href="{{ url_for(request.endpoint, **dict(request.view_args, lang=code)) }}"
+                lang="{{ code }}"
+                hreflang="{{ code }}"
+                aria-current="{{ 'page' if lang == code else 'false' }}"
+                class="rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors
+                      focus-visible:outline-2 focus-visible:outline-offset-2
+                      focus-visible:outline-teal-700
+                  {{ 'bg-teal-800 text-white shadow-sm'
+                    if lang == code
+                    else 'text-slate-600 hover:bg-teal-50 hover:text-teal-900' }}"
+              >
+                {{ label }}
+              </a>
+            {% endfor %}
+          </nav>
+
+        </div>
+
+
         <!-- Woman, Life, Freedom -->
-      <div
-        class="hidden flex-1 items-center justify-center px-4 md:flex"
-        dir="rtl"
-      >
+        <div
+          class="absolute right-0 top-full mt-1 hidden w-full justify-end sm:flex"
+          dir="rtl"
+        >
         <img
           src="{{ url_for('static', filename='images/woman-life-freedom.png') }}"
           alt="زن، زندگی، آزادی"
-          class="h-auto w-full max-w-80 object-contain drop-shadow-sm lg:max-w-96"
+          class="h-auto w-40 object-contain drop-shadow-sm md:w-48"
         >
+        </div>
+
       </div>
 
-
-    
-
-      <div class="flex flex-col gap-2">
-        <span class="px-2 text-xs font-medium text-slate-500">
-          {{ 'زبان خود را انتخاب کنید' if lang == 'fa'
-             else 'Choose your language' }}
-        </span>
-
-        <nav
-          aria-label="{{ 'انتخاب زبان' if lang == 'fa' else 'Language selection' }}"
-          class="flex items-center gap-1 rounded-2xl border border-white bg-white/90 p-1.5 shadow-sm ring-1 ring-teal-900/10"
-        >
-          {% for code, label in [('en', 'English'), ('fa', 'فارسی')] %}
-            <a
-              href="{{ url_for(request.endpoint, **dict(request.view_args, lang=code)) }}"
-              lang="{{ code }}"
-              hreflang="{{ code }}"
-              aria-current="{{ 'page' if lang == code else 'false' }}"
-              class="rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700
-                {{ 'bg-teal-800 text-white shadow-sm'
-                   if lang == code
-                   else 'text-slate-600 hover:bg-teal-50 hover:text-teal-900' }}"
-            >
-              {{ label }}
-            </a>
-          {% endfor %}
-        </nav>
-      </div>
     </div>
   </div>
 

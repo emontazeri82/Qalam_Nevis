@@ -308,6 +308,9 @@
   .top-96 {
     top: calc(var(--spacing) * 96);
   }
+  .top-full {
+    top: 100%;
+  }
   .-right-4 {
     right: calc(var(--spacing) * -4);
   }
@@ -575,6 +578,9 @@
   .w-24 {
     width: calc(var(--spacing) * 24);
   }
+  .w-40 {
+    width: calc(var(--spacing) * 40);
+  }
   .w-44 {
     width: calc(var(--spacing) * 44);
   }
@@ -619,9 +625,6 @@
   }
   .max-w-7xl {
     max-width: var(--container-7xl);
-  }
-  .max-w-80 {
-    max-width: calc(var(--spacing) * 80);
   }
   .max-w-full {
     max-width: 100%;
@@ -685,6 +688,9 @@
   }
   .justify-center {
     justify-content: center;
+  }
+  .justify-end {
+    justify-content: flex-end;
   }
   .gap-1 {
     gap: var(--spacing);
@@ -1751,6 +1757,9 @@
     .sm\:col-span-2 {
       grid-column: span 2 / span 2;
     }
+    .sm\:flex {
+      display: flex;
+    }
     .sm\:inline {
       display: inline;
     }
@@ -1811,8 +1820,8 @@
     }
   }
   @media (width >= 48rem) {
-    .md\:flex {
-      display: flex;
+    .md\:w-48 {
+      width: calc(var(--spacing) * 48);
     }
     .md\:flex-row {
       flex-direction: row;
@@ -1836,9 +1845,6 @@
     }
     .lg\:hidden {
       display: none;
-    }
-    .lg\:max-w-96 {
-      max-width: calc(var(--spacing) * 96);
     }
     .lg\:grid-cols-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
