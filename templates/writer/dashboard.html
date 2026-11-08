@@ -2,184 +2,1133 @@
 {% extends "base.html" %}
 
 {% block title %}
-  {{ 'میز نویسنده | قلم نویس' if lang == 'fa'
-     else 'Writer Desk | Qalam Nevis' }}
+  {{ "استودیوی نویسنده | قلم نویس" if lang == "fa"
+     else "Writer's Studio | Qalam Nevis" }}
 {% endblock %}
-
 
 {% block content %}
 
+{% set fa = lang == "fa" %}
+{% set writer = writer|default(none) %}
+{% set writer_name = writer.display_name if writer and writer.display_name
+    else ("نویسنده قلم نویس" if fa else "Qalam Nevis Writer") %}
+{% set writer_username = writer.username if writer and writer.username
+    else "writer" %}
+
+{# ---------------------------------------------------------
+   DEMO DATA
+   Replace with articles passed from Flask later.
+   Each item represents one article, not one translation.
+--------------------------------------------------------- #}
+
+{% set articles = articles|default([
+  {
+    "title": "Autumn in Tehran",
+    "summary": "A story of memory, belonging, and the city we carry within us.",
+    "category": "story",
+    "status": "changes_requested",
+    "language": "FA",
+    "date": "Nov 7, 2026"
+  },
+  {
+    "title": "Memory and Language",
+    "summary": "Reflections on language, identity, and the stories we inherit.",
+    "category": "criticism",
+    "status": "in_review",
+    "language": "EN / FA",
+    "date": "Nov 6, 2026"
+  },
+  {
+    "title": "The Silent City",
+    "summary": "Observations from the streets of a city in transition.",
+    "category": "report",
+    "status": "draft",
+    "language": "EN",
+    "date": "Nov 5, 2026"
+  },
+  {
+    "title": "A Story of Home",
+    "summary": "Finding belonging between familiar places and distant memories.",
+    "category": "story",
+    "status": "published",
+    "language": "FA",
+    "date": "Oct 20, 2026"
+  },
+  {
+    "title": "Between Two Rivers",
+    "summary": "A journey through landscape, memory, and forgotten voices.",
+    "category": "story",
+    "status": "draft",
+    "language": "EN",
+    "date": "Oct 18, 2026"
+  },
+  {
+    "title": "The Art of Listening",
+    "summary": "Why thoughtful criticism begins with careful attention.",
+    "category": "criticism",
+    "status": "published",
+    "language": "EN / FA",
+    "date": "Oct 12, 2026"
+  }
+]) %}
+
+{% set drafts = articles|selectattr("status", "equalto", "draft")|list %}
+{% set revisions = articles|selectattr("status", "equalto", "changes_requested")|list %}
+{% set published = articles|selectattr("status", "equalto", "published")|list %}
+{% set review_items = articles|selectattr("status", "in", ["submitted", "in_review", "approved"])|list %}
+
 <div
+  id="writer-dashboard"
   lang="{{ lang }}"
-  dir="{{ 'rtl' if lang == 'fa' else 'ltr' }}"
-  class="relative overflow-hidden rounded-3xl"
+  dir="{{ 'rtl' if fa else 'ltr' }}"
+  class="relative min-h-screen overflow-hidden
+         rounded-3xl bg-[#F7F5EF]
+         text-teal-950"
 >
 
-  <!-- =========================================================
-       DECORATIVE BACKGROUND
-  ========================================================== -->
+  <!-- BACKGROUND DECORATIONS -->
 
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute -left-24 top-12
-           h-72 w-72 rounded-full bg-teal-200/30 blur-3xl"
+    class="pointer-events-none absolute -inset-s-32 top-40
+           h-96 w-96 rounded-full bg-teal-200/30
+           blur-3xl"
   ></div>
 
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute -right-24 top-80
-           h-72 w-72 rounded-full bg-amber-100/40 blur-3xl"
+    class="pointer-events-none absolute -inset-e-32 top-162.5
+           h-96 w-96 rounded-full bg-amber-200/30
+           blur-3xl"
   ></div>
 
+  <div class="relative z-10 mx-auto max-w-7xl
+              px-3 py-6 sm:px-6 lg:px-8 lg:py-10">
 
-  <!-- =========================================================
-       PAGE CONTAINER
-  ========================================================== -->
+    <!-- ==========================================
+         WRITER'S STUDIO HERO
+    =========================================== -->
 
-  <div class="relative z-10 mx-auto max-w-7xl px-2 py-4 sm:px-4">
-
-
-    <!-- =====================================================
-         HERO / WRITER HEADER
-    ====================================================== -->
-
-    <section
-      class="relative overflow-hidden rounded-3xl
-             bg-linear-to-br from-teal-950 via-teal-900 to-slate-950
-             px-6 py-8 text-white
-             shadow-[0_30px_80px_-30px_rgba(15,23,42,0.45)]
-             sm:px-8 lg:px-10"
+    <header
+      class="relative isolate overflow-hidden rounded-4xl
+             bg-linear-to-br from-teal-950
+             via-[#174F45] to-[#286958]
+             px-6 py-9 text-white
+             shadow-[0_25px_65px_-25px_rgba(15,65,57,0.5)]
+             sm:px-10 sm:py-11 lg:px-12"
     >
 
       <!-- Decorative circles -->
 
       <div
         aria-hidden="true"
-        class="pointer-events-none absolute -right-20 -top-28
-               h-80 w-80 rounded-full
-               border border-teal-400/20"
+        class="pointer-events-none absolute -inset-e-28 -top-40
+               h-107.5 w-107.5 rounded-full
+               border border-amber-200/20"
       ></div>
 
       <div
         aria-hidden="true"
-        class="pointer-events-none absolute -right-4 -top-10
-               h-48 w-48 rounded-full
-               border border-teal-300/10"
+        class="pointer-events-none absolute -inset-e-10 -top-20
+               h-72 w-72 rounded-full
+               border border-amber-200/15"
       ></div>
 
       <div
         aria-hidden="true"
-        class="pointer-events-none absolute -bottom-40 -left-24
+        class="pointer-events-none absolute -inset-s-28 -bottom-48
                h-96 w-96 rounded-full
-               border border-teal-500/20"
+               border border-teal-200/15"
       ></div>
 
-
       <div
-        class="relative z-10 flex flex-col gap-8
-               lg:flex-row lg:items-end lg:justify-between"
+        aria-hidden="true"
+        class="absolute inset-e-8 top-7 text-6xl
+               text-amber-200/15 sm:text-8xl"
       >
+        ❧
+      </div>
 
-        <!-- Writer introduction -->
+      <div class="relative z-10">
 
-        <div>
+        <!-- Eyebrow -->
 
-          <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3">
 
-            <span
-              aria-hidden="true"
-              class="h-px w-8 bg-teal-400"
-            ></span>
-
-            <p
-              class="text-xs font-semibold text-teal-300
-                     {{ 'tracking-normal'
-                        if lang == 'fa'
-                        else 'uppercase tracking-[0.22em]' }}"
-            >
-              {{ 'میز نویسنده'
-                 if lang == 'fa'
-                 else 'Writer Desk' }}
-            </p>
-
-          </div>
-
-
-          <h1
-            class="mt-4 font-serif text-3xl leading-tight
-                   text-white sm:text-4xl"
-          >
-            {% if lang == 'fa' %}
-              خوش آمدید، نویسنده
-            {% else %}
-              Welcome back, Writer.
-            {% endif %}
-          </h1>
-
+          <span class="h-px w-9 bg-amber-300"></span>
 
           <p
-            class="mt-3 max-w-2xl text-sm leading-7
-                   text-teal-100/75 sm:text-base"
+            class="text-xs font-bold text-amber-200
+                   {{ 'tracking-normal' if fa
+                      else 'uppercase tracking-[0.22em]' }}"
           >
-            {% if lang == 'fa' %}
-
-              نوشته‌های خود را بنویسید، پیش‌نویس‌ها را مدیریت کنید
-              و آثار آماده را برای بررسی تحریریه قلم نویس ارسال کنید.
-
-            {% else %}
-
-              Write, refine and manage your work, then submit
-              finished articles to the Qalam Nevis editorial desk
-              for review.
-
-            {% endif %}
+            {{ "قلم نویس / استودیوی نویسنده" if fa
+               else "QALAM NEVIS / THE WRITER'S STUDIO" }}
           </p>
 
         </div>
 
+        <!-- Main heading -->
 
-        <!-- New article button -->
+        <h1
+          class="mt-6 max-w-3xl
+                 {{ 'font-sans' if fa else 'font-serif' }}
+                 text-3xl leading-tight sm:text-4xl
+                 lg:text-5xl"
+        >
+          {{ "هر داستان از جایی آغاز می‌شود." if fa
+             else "Every story begins somewhere." }}
+        </h1>
 
-        <div class="shrink-0">
+        <p
+          class="mt-5 max-w-xl text-sm leading-8
+                 text-teal-50/80 sm:text-base"
+        >
+          {{ "جایی آرام برای واژه‌ها، اندیشه‌ها و داستان‌های ناتمام شما."
+             if fa else
+             "A quiet place for your words, ideas, and unfinished stories." }}
+        </p>
+
+        <!-- Writer identity and actions -->
+
+        <div
+          class="mt-9 flex flex-col gap-5
+                 border-t border-white/15 pt-6
+                 lg:flex-row lg:items-center
+                 lg:justify-between"
+        >
+
+          <!-- Writer identity -->
+
+          <div class="flex items-center gap-3">
+
+            <div
+              class="flex h-12 w-12 shrink-0 items-center
+                     justify-center rounded-full
+                     border border-amber-200/30
+                     bg-white/10 text-2xl text-amber-200"
+            >
+              ✍
+            </div>
+
+            <div class="min-w-0">
+
+              <p class="truncate text-sm font-semibold text-white">
+                {{ writer_name }}
+              </p>
+
+              <p class="mt-1 text-xs text-teal-100/65">
+                @{{ writer_username }}
+              </p>
+
+            </div>
+
+          </div>
+
+          <!-- Buttons -->
+
+          <div class="flex flex-wrap items-center gap-3">
+
+            {% if profile_edit_url is defined and profile_edit_url %}
+
+              <a
+                href="{{ profile_edit_url }}"
+                class="inline-flex flex-1 items-center
+                       justify-center gap-2 rounded-xl
+                       border border-white/30 bg-white/5
+                       px-5 py-3 text-sm font-semibold
+                       text-white transition-all duration-200
+                       hover:-translate-y-0.5 hover:bg-white/15
+                       focus-visible:outline-2
+                       focus-visible:outline-offset-4
+                       focus-visible:outline-white
+                       sm:flex-none"
+              >
+                <span aria-hidden="true">✎</span>
+
+                {{ "ویرایش پروفایل" if fa else "Edit Profile" }}
+              </a>
+
+            {% else %}
+
+              <span
+                class="inline-flex flex-1 items-center
+                       justify-center gap-2 rounded-xl
+                       border border-white/20 bg-white/5
+                       px-5 py-3 text-sm font-semibold
+                       text-teal-100/65 sm:flex-none"
+                title="{{ 'صفحه ویرایش پروفایل هنوز متصل نشده است.'
+                          if fa else
+                          'Profile editor route is not connected yet.' }}"
+              >
+                <span aria-hidden="true">✎</span>
+
+                {{ "ویرایش پروفایل" if fa else "Edit Profile" }}
+              </span>
+
+            {% endif %}
+
+            <a
+              href="{{ url_for('writer_new_article', lang=lang) }}"
+              class="inline-flex flex-1 items-center
+                     justify-center gap-2 rounded-xl
+                     bg-amber-200 px-5 py-3
+                     text-sm font-bold text-teal-950
+                     shadow-lg shadow-black/10
+                     transition-all duration-200
+                     hover:-translate-y-0.5
+                     hover:bg-amber-100 hover:shadow-xl
+                     focus-visible:outline-2
+                     focus-visible:outline-offset-4
+                     focus-visible:outline-white
+                     sm:flex-none"
+            >
+              <span class="text-lg" aria-hidden="true">＋</span>
+
+              {{ "مقاله جدید" if fa else "New Article" }}
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </header>
+
+    <!-- DECORATIVE DIVIDER -->
+
+    <div
+      aria-hidden="true"
+      class="my-6 flex items-center justify-center
+             gap-4 text-amber-700/60"
+    >
+      <span class="h-px w-16 bg-amber-700/20"></span>
+      <span class="text-xl">✦ ❧ ✦</span>
+      <span class="h-px w-16 bg-amber-700/20"></span>
+    </div>
+
+    <!-- ==========================================
+         EDITORIAL ATTENTION + CONTINUE WRITING
+    =========================================== -->
+
+    <section
+      class="grid gap-5 lg:grid-cols-2"
+      aria-label="{{ 'اقدامات مهم' if fa else 'Writing priorities' }}"
+    >
+
+      <!-- Editorial attention -->
+
+      <div
+        class="group relative overflow-hidden rounded-3xl
+               border border-amber-200/60 bg-white
+               p-6 shadow-sm transition-all duration-200
+               hover:-translate-y-1 hover:shadow-lg
+               sm:p-7"
+      >
+
+        <div
+          class="absolute inset-y-0 inset-s-0 w-1
+                 bg-amber-400"
+        ></div>
+
+        <div class="flex items-start justify-between gap-4">
+
+          <div
+            class="flex h-11 w-11 items-center
+                   justify-center rounded-2xl
+                   bg-amber-50 text-amber-700"
+          >
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 5h16v12H8l-4 3V5Z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                d="M8 9h8M8 13h5"
+              ></path>
+            </svg>
+          </div>
+
+          {% if revisions %}
+            <span
+              class="rounded-full bg-amber-100
+                     px-3 py-1 text-xs font-bold
+                     text-amber-800"
+            >
+              {{ revisions|length }}
+              {{ "مورد" if fa else "pending" }}
+            </span>
+          {% endif %}
+
+        </div>
+
+        <p
+          class="mt-5 text-xs font-bold text-amber-700
+                 {{ 'tracking-normal' if fa
+                    else 'uppercase tracking-[0.16em]' }}"
+        >
+          {{ "از تحریریه" if fa else "EDITORIAL ATTENTION" }}
+        </p>
+
+        <h2
+          class="mt-2 text-xl font-semibold text-teal-950
+                 {{ 'font-sans' if fa else 'font-serif' }}
+                 sm:text-2xl"
+        >
+          {% if revisions %}
+            {{ "نوشته‌های شما نیازمند توجه‌اند" if fa
+               else "Your words need a little attention" }}
+          {% else %}
+            {{ "همه چیز به‌روز است" if fa
+               else "You're all caught up" }}
+          {% endif %}
+        </h2>
+
+        <p class="mt-3 text-sm leading-7 text-slate-500">
+
+          {% if revisions %}
+            {{ "تحریریه برای برخی نوشته‌های شما درخواست اصلاح فرستاده است."
+               if fa else
+               "The editorial desk has requested revisions to your work." }}
+          {% else %}
+            {{ "در حال حاضر درخواست اصلاح تازه‌ای ندارید."
+               if fa else
+               "There are no revision requests waiting for you." }}
+          {% endif %}
+
+        </p>
+
+        {% if revisions %}
+          <button
+            id="attention-filter"
+            type="button"
+            class="mt-5 inline-flex items-center gap-2
+                   text-sm font-bold text-teal-800
+                   transition-colors hover:text-teal-600
+                   focus-visible:outline-2
+                   focus-visible:outline-teal-700"
+          >
+            {{ "مشاهده نوشته‌ها" if fa else "View requested changes" }}
+
+            <span aria-hidden="true">
+              {{ "←" if fa else "→" }}
+            </span>
+          </button>
+        {% endif %}
+
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute -bottom-12
+                 -inset-e-8 text-9xl text-amber-500/5"
+        >
+          ❧
+        </div>
+
+      </div>
+
+      <!-- Continue writing -->
+
+      <div
+        class="group relative overflow-hidden rounded-3xl
+               border border-teal-100 bg-white
+               p-6 shadow-sm transition-all duration-200
+               hover:-translate-y-1 hover:shadow-lg
+               sm:p-7"
+      >
+
+        <div
+          class="absolute inset-y-0 inset-s-0 w-1
+                 bg-teal-600"
+        ></div>
+
+        <div
+          class="flex h-11 w-11 items-center
+                 justify-center rounded-2xl
+                 bg-teal-50 text-teal-700"
+        >
+          <svg
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"
+            ></path>
+          </svg>
+        </div>
+
+        <p
+          class="mt-5 text-xs font-bold text-teal-700
+                 {{ 'tracking-normal' if fa
+                    else 'uppercase tracking-[0.16em]' }}"
+        >
+          {{ "ادامه نوشتن" if fa else "PICK UP YOUR PEN" }}
+        </p>
+
+        <h2
+          class="mt-2 text-xl font-semibold text-teal-950
+                 {{ 'font-sans' if fa else 'font-serif' }}
+                 sm:text-2xl"
+        >
+          {% if drafts %}
+            {{ drafts[0].title }}
+          {% else %}
+            {{ "صفحه‌ای تازه در انتظار شماست" if fa
+               else "A blank page awaits" }}
+          {% endif %}
+        </h2>
+
+        <p class="mt-3 text-sm leading-7 text-slate-500">
+
+          {% if drafts %}
+            {{ "پیش‌نویس شما منتظر ادامه نوشتن است."
+               if fa else
+               "Your unfinished draft is waiting for its next sentence." }}
+          {% else %}
+            {{ "داستان تازه خود را همین امروز آغاز کنید."
+               if fa else
+               "Every great story begins with a first sentence." }}
+          {% endif %}
+
+        </p>
+
+        {% if drafts and drafts[0].edit_url is defined
+              and drafts[0].edit_url %}
+
+          <a
+            href="{{ drafts[0].edit_url }}"
+            class="mt-5 inline-flex items-center gap-2
+                   text-sm font-bold text-teal-800
+                   hover:text-teal-600"
+          >
+            {{ "ادامه نوشتن" if fa else "Continue writing" }}
+            <span aria-hidden="true">{{ "←" if fa else "→" }}</span>
+          </a>
+
+        {% elif drafts %}
+
+          <button
+            type="button"
+            id="continue-draft"
+            class="mt-5 inline-flex items-center gap-2
+                   text-sm font-bold text-teal-800
+                   hover:text-teal-600"
+          >
+            {{ "پیدا کردن پیش‌نویس" if fa else "Find your draft" }}
+            <span aria-hidden="true">{{ "←" if fa else "→" }}</span>
+          </button>
+
+        {% else %}
 
           <a
             href="{{ url_for('writer_new_article', lang=lang) }}"
-            class="group inline-flex w-full items-center
-                   justify-center gap-2 rounded-xl
-                   bg-white px-5 py-3
-                   text-sm font-semibold text-teal-950
-                   shadow-lg shadow-black/10
+            class="mt-5 inline-flex items-center gap-2
+                   text-sm font-bold text-teal-800
+                   hover:text-teal-600"
+          >
+            {{ "شروع نوشتن" if fa else "Start writing" }}
+            <span aria-hidden="true">{{ "←" if fa else "→" }}</span>
+          </a>
+
+        {% endif %}
+
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute -bottom-12
+                 -inset-e-8 text-9xl text-teal-500/5"
+        >
+          ✍
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         WRITING STATISTICS
+    =========================================== -->
+
+    <section class="mt-10">
+
+      <div
+        class="mb-5 flex flex-wrap items-end
+               justify-between gap-3"
+      >
+
+        <div>
+
+          <p
+            class="text-xs font-bold text-teal-700
+                   {{ 'tracking-normal' if fa
+                      else 'uppercase tracking-[0.18em]' }}"
+          >
+            {{ "سفر نویسندگی" if fa else "YOUR WRITING JOURNEY" }}
+          </p>
+
+          <h2
+            class="mt-2 text-2xl text-teal-950
+                   {{ 'font-sans' if fa else 'font-serif' }}
+                   sm:text-3xl"
+          >
+            {{ "نوشته‌های شما در یک نگاه" if fa
+               else "Your writing at a glance" }}
+          </h2>
+
+        </div>
+
+        <p class="text-sm text-slate-500">
+          {{ articles|length }}
+          {{ "نوشته" if fa else "total works" }}
+        </p>
+
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-5">
+
+        {% set stats = [
+          {
+            "label": "پیش‌نویس‌ها" if fa else "Drafts",
+            "count": drafts|length,
+            "icon": "✎",
+            "color": "stone"
+          },
+          {
+            "label": "در حال بررسی" if fa else "In Review",
+            "count": review_items|length,
+            "icon": "◷",
+            "color": "amber"
+          },
+          {
+            "label": "نیازمند اصلاح" if fa else "Revisions",
+            "count": revisions|length,
+            "icon": "✧",
+            "color": "rose"
+          },
+          {
+            "label": "منتشرشده" if fa else "Published",
+            "count": published|length,
+            "icon": "❖",
+            "color": "teal"
+          }
+        ] %}
+
+        {% for stat in stats %}
+
+          <div
+            class="group relative overflow-hidden
+                   rounded-2xl border border-stone-200/80
+                   bg-white p-5 shadow-sm
                    transition-all duration-200
-                   hover:-translate-y-0.5
-                   hover:bg-teal-50
-                   hover:shadow-xl
-                   focus-visible:outline-2
-                   focus-visible:outline-offset-4
-                   focus-visible:outline-white
-                   sm:w-auto
-                   motion-reduce:transform-none
-                   motion-reduce:transition-none"
+                   hover:-translate-y-1 hover:shadow-md
+                   sm:p-6"
           >
 
+            <div
+              class="pointer-events-none absolute -inset-e-10 -top-10
+                     h-28 w-28 rounded-full bg-stone-100/70
+                     transition-transform duration-300
+                     group-hover:scale-125"
+            ></div>
+
+            <div class="relative flex items-start justify-between">
+
+              <div>
+
+                <p
+                  class="text-xs font-semibold text-slate-500"
+                >
+                  {{ stat.label }}
+                </p>
+
+                <p
+                  class="mt-3 font-serif text-4xl
+                         font-semibold text-teal-950"
+                >
+                  {{ stat.count }}
+                </p>
+
+              </div>
+
+              <span
+                class="flex h-10 w-10 items-center
+                       justify-center rounded-xl text-xl
+                       {% if stat.color == 'stone' %}
+                         bg-stone-100 text-stone-600
+                       {% elif stat.color == 'amber' %}
+                         bg-amber-50 text-amber-700
+                       {% elif stat.color == 'rose' %}
+                         bg-rose-50 text-rose-700
+                       {% else %}
+                         bg-teal-50 text-teal-700
+                       {% endif %}"
+              >
+                {{ stat.icon }}
+              </span>
+
+            </div>
+
+            <div
+              class="relative mt-5 h-1 w-12 rounded-full
+                     {% if stat.color == 'stone' %}
+                       bg-stone-300
+                     {% elif stat.color == 'amber' %}
+                       bg-amber-400
+                     {% elif stat.color == 'rose' %}
+                       bg-rose-400
+                     {% else %}
+                       bg-teal-600
+                     {% endif %}"
+            ></div>
+
+          </div>
+
+        {% endfor %}
+
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         ARTICLE LIBRARY
+    =========================================== -->
+
+    <section
+      id="article-library"
+      class="mt-9 scroll-mt-6 overflow-hidden
+             rounded-3xl border border-stone-200
+             bg-white shadow-[0_15px_50px_-35px_rgba(15,65,57,0.25)]"
+    >
+
+      <!-- Library header -->
+
+      <div
+        class="border-b border-stone-100
+               px-5 py-7 sm:px-8"
+      >
+
+        <div
+          class="flex flex-wrap items-center
+                 justify-between gap-4"
+        >
+
+          <div>
+
+            <p
+              class="text-xs font-bold text-teal-700
+                     {{ 'tracking-normal' if fa
+                        else 'uppercase tracking-[0.18em]' }}"
+            >
+              {{ "کتابخانه شخصی" if fa else "YOUR PERSONAL LIBRARY" }}
+            </p>
+
+            <h2
+              class="mt-2 text-2xl text-teal-950
+                     {{ 'font-sans' if fa else 'font-serif' }}
+                     sm:text-3xl"
+            >
+              {{ "نوشته‌های من" if fa else "Your Library" }}
+            </h2>
+
+            <p class="mt-2 text-sm text-slate-500">
+              {{ "تمام نوشته‌های شما در یک جا."
+                 if fa else
+                 "Every piece you've written, gathered in one place." }}
+            </p>
+
+          </div>
+
+          <span
+            id="library-count"
+            class="rounded-full bg-teal-50 px-4 py-2
+                   text-xs font-bold text-teal-800"
+          >
+            {{ articles|length }}
+            {{ "مقاله" if fa else "articles" }}
+          </span>
+
+        </div>
+
+        <!-- Search -->
+
+        <div class="relative mt-6">
+
+          <label for="article-search" class="sr-only">
+            {{ "جست‌وجوی نوشته‌ها" if fa else "Search your articles" }}
+          </label>
+
+          <span
+            class="pointer-events-none absolute inset-y-0
+                   inset-s-4 flex items-center text-slate-400"
+          >
             <svg
+              class="h-5 w-5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="1.8"
               aria-hidden="true"
-              class="h-5 w-5"
             >
-              <path
-                stroke-linecap="round"
-                d="M12 5v14M5 12h14"
-              ></path>
+              <circle cx="10.5" cy="10.5" r="6.5"></circle>
+              <path stroke-linecap="round" d="m16 16 5 5"></path>
             </svg>
+          </span>
 
-            {{ 'نوشتن مقاله جدید'
-               if lang == 'fa'
-               else 'New article' }}
+          <input
+            id="article-search"
+            type="search"
+            autocomplete="off"
+            placeholder="{{ 'در نوشته‌های خود جست‌وجو کنید...'
+                          if fa else
+                          'Find something you have written...' }}"
+            class="w-full rounded-2xl border border-stone-200
+                   bg-stone-50/80 py-4 ps-12 pe-5
+                   text-sm text-slate-800
+                   placeholder:text-slate-400
+                   outline-none transition-all
+                   focus:border-teal-600 focus:bg-white
+                   focus:ring-4 focus:ring-teal-700/10"
+          >
 
-          </a>
+        </div>
+
+        <!-- Status filters -->
+
+        <div
+          class="mt-5 flex flex-wrap gap-2"
+          role="group"
+          aria-label="{{ 'فیلتر وضعیت مقاله‌ها'
+                        if fa else 'Article status filters' }}"
+        >
+
+          {% set filters = [
+            ("all", "همه نوشته‌ها" if fa else "All Works"),
+            ("draft", "پیش‌نویس" if fa else "Drafts"),
+            ("review", "در حال بررسی" if fa else "In Review"),
+            ("changes_requested", "نیازمند اصلاح" if fa else "Revisions"),
+            ("published", "منتشرشده" if fa else "Published")
+          ] %}
+
+          {% for value, label in filters %}
+
+            <button
+              type="button"
+              data-filter="{{ value }}"
+              aria-pressed="{{ 'true' if loop.first else 'false' }}"
+              class="article-filter rounded-full border
+                     px-4 py-2.5 text-xs font-semibold
+                     transition-all duration-200
+                     focus-visible:outline-2
+                     focus-visible:outline-offset-2
+                     focus-visible:outline-teal-700
+                     {% if loop.first %}
+                       border-teal-900 bg-teal-900 text-white
+                     {% else %}
+                       border-stone-200 bg-white text-slate-600
+                       hover:border-teal-300 hover:bg-teal-50
+                       hover:text-teal-900
+                     {% endif %}"
+            >
+              {{ label }}
+            </button>
+
+          {% endfor %}
+
+        </div>
+
+      </div>
+
+      <!-- ======================================
+           TWO-COLUMN ARTICLE CARDS
+      ======================================= -->
+
+      <div class="p-4 sm:p-6 lg:p-8">
+
+        <div
+          id="article-grid"
+          class="grid grid-cols-1 gap-5 md:grid-cols-2"
+        >
+
+          {% for article in articles %}
+
+            {% set category = article.category|default("other", true) %}
+            {% set status = article.status|default("draft", true) %}
+
+            {% set category_names = {
+              "story": "داستان" if fa else "Story",
+              "report": "گزارش" if fa else "Report",
+              "criticism": "نقد" if fa else "Criticism"
+            } %}
+
+            {% set status_names = {
+              "draft": "پیش‌نویس" if fa else "Draft",
+              "submitted": "ارسال‌شده" if fa else "Submitted",
+              "in_review": "در حال بررسی" if fa else "In Review",
+              "changes_requested": "نیازمند اصلاح" if fa else "Changes Requested",
+              "approved": "تأییدشده" if fa else "Approved",
+              "published": "منتشرشده" if fa else "Published",
+              "rejected": "ردشده" if fa else "Rejected",
+              "archived": "بایگانی‌شده" if fa else "Archived"
+            } %}
+
+            <article
+              class="article-card group flex min-w-0 flex-col
+                     overflow-hidden rounded-2xl
+                     border border-stone-200 bg-white
+                     transition-all duration-300
+                     hover:-translate-y-1
+                     hover:border-teal-200
+                     hover:shadow-[0_15px_35px_-20px_rgba(15,65,57,0.35)]"
+              data-title="{{ article.title|default('')|lower|e }}"
+              data-status="{{ status }}"
+            >
+
+              <!-- Decorative category cover -->
+
+              <div
+                class="relative isolate min-h-44 overflow-hidden
+                       p-6 sm:p-7
+                       {% if category == 'story' %}
+                         bg-[#EEE4D1] text-[#5B4832]
+                       {% elif category == 'report' %}
+                         bg-[#E2E9E9] text-[#36565B]
+                       {% elif category == 'criticism' %}
+                         bg-[#E1EAE2] text-[#315B4B]
+                       {% else %}
+                         bg-stone-100 text-stone-700
+                       {% endif %}"
+              >
+
+                <!-- Decorative geometry -->
+
+                <div
+                  aria-hidden="true"
+                  class="pointer-events-none absolute -inset-e-12 -top-16
+                         h-48 w-48 rounded-full
+                         border border-current opacity-10"
+                ></div>
+
+                <div
+                  aria-hidden="true"
+                  class="pointer-events-none absolute -inset-e-4 -top-8
+                         h-32 w-32 rounded-full
+                         border border-current opacity-10"
+                ></div>
+
+                <div
+                  aria-hidden="true"
+                  class="pointer-events-none absolute -bottom-14
+                         inset-e-5 text-9xl opacity-10"
+                >
+                  {% if category == "story" %}
+                    ❧
+                  {% elif category == "report" %}
+                    ◈
+                  {% elif category == "criticism" %}
+                    ✦
+                  {% else %}
+                    ✧
+                  {% endif %}
+                </div>
+
+                <div class="relative z-10">
+
+                  <p
+                    class="text-xs font-bold
+                           {{ 'tracking-normal' if fa
+                              else 'uppercase tracking-[0.16em]' }}"
+                  >
+                    ✦ {{ category_names.get(category, category|title) }}
+                  </p>
+
+                  <h3
+                    class="mt-5 line-clamp-2 text-xl
+                           leading-snug
+                           {{ 'font-sans' if fa else 'font-serif' }}
+                           sm:text-2xl"
+                  >
+                    {{ article.title|default("Untitled") }}
+                  </h3>
+
+                  <p
+                    class="mt-3 line-clamp-2 text-xs
+                           leading-6 opacity-75"
+                  >
+                    {{ article.summary|default("") }}
+                  </p>
+
+                </div>
+
+              </div>
+
+              <!-- Card content -->
+
+              <div
+                class="flex flex-1 flex-col gap-5 p-5 sm:p-6"
+              >
+
+                <div
+                  class="flex flex-wrap items-center
+                         justify-between gap-3"
+                >
+
+                  <!-- Status -->
+
+                  <span
+                    class="inline-flex items-center rounded-full
+                           px-3 py-1.5 text-xs font-bold
+                           {% if status == 'draft' %}
+                             bg-stone-100 text-stone-600
+                           {% elif status in ['submitted', 'in_review', 'approved'] %}
+                             bg-amber-50 text-amber-800
+                           {% elif status == 'changes_requested' %}
+                             bg-rose-50 text-rose-700
+                           {% elif status == 'published' %}
+                             bg-emerald-50 text-emerald-700
+                           {% else %}
+                             bg-slate-100 text-slate-600
+                           {% endif %}"
+                  >
+                    {{ status_names.get(status, status|replace("_", " ")|title) }}
+                  </span>
+
+                  <!-- Language -->
+
+                  <span
+                    class="rounded-lg border border-stone-200
+                           px-2.5 py-1 text-[11px]
+                           font-bold text-slate-500"
+                  >
+                    {{ article.language|default("EN") }}
+                  </span>
+
+                </div>
+
+                <div
+                  class="mt-auto flex flex-wrap items-center
+                         justify-between gap-3
+                         border-t border-stone-100 pt-4"
+                >
+
+                  <span class="text-xs text-slate-400">
+                    {{ article.date|default("") }}
+                  </span>
+
+                  {% if article.edit_url is defined and article.edit_url %}
+
+                    <a
+                      href="{{ article.edit_url }}"
+                      class="inline-flex items-center gap-2
+                             text-xs font-bold text-teal-800
+                             hover:text-teal-600"
+                    >
+                      {{ "ادامه نوشتن" if fa else "Continue writing" }}
+                      <span aria-hidden="true">
+                        {{ "←" if fa else "→" }}
+                      </span>
+                    </a>
+
+                  {% elif article.detail_url is defined and article.detail_url %}
+
+                    <a
+                      href="{{ article.detail_url }}"
+                      class="inline-flex items-center gap-2
+                             text-xs font-bold text-teal-800
+                             hover:text-teal-600"
+                    >
+                      {{ "مشاهده مقاله" if fa else "View article" }}
+                      <span aria-hidden="true">
+                        {{ "←" if fa else "→" }}
+                      </span>
+                    </a>
+
+                  {% else %}
+
+                    <span class="text-xs text-slate-400">
+                      {{ "پیش‌نمایش" if fa else "Preview" }}
+                    </span>
+
+                  {% endif %}
+
+                </div>
+
+              </div>
+
+            </article>
+
+          {% endfor %}
+
+        </div>
+
+        <!-- Empty state -->
+
+        <div
+          id="article-empty"
+          hidden
+          class="hidden py-16 text-center"
+        >
+
+          <div
+            class="mx-auto flex h-20 w-20 items-center
+                   justify-center rounded-full
+                   bg-amber-50 text-4xl text-amber-700"
+          >
+            ❧
+          </div>
+
+          <h3
+            class="mt-6 text-2xl text-teal-950
+                   {{ 'font-sans' if fa else 'font-serif' }}"
+          >
+            {{ "نوشته‌ای پیدا نشد" if fa else "No stories found" }}
+          </h3>
+
+          <p class="mx-auto mt-3 max-w-sm text-sm
+                    leading-7 text-slate-500">
+            {{ "عبارت جست‌وجو یا فیلتر را تغییر دهید."
+               if fa else
+               "Try another search or choose a different status." }}
+          </p>
+
+        </div>
+
+        <!-- Pagination -->
+
+        <div
+          class="mt-8 flex flex-col gap-4
+                 border-t border-stone-100 pt-6
+                 sm:flex-row sm:items-center
+                 sm:justify-between"
+        >
+
+          <p
+            id="page-info"
+            class="text-center text-xs text-slate-500
+                   sm:text-start"
+            aria-live="polite"
+          ></p>
+
+          <nav
+            id="pagination"
+            class="flex flex-wrap items-center
+                   justify-center gap-2"
+            aria-label="{{ 'صفحه‌بندی مقاله‌ها'
+                          if fa else 'Article pagination' }}"
+          ></nav>
 
         </div>
 
@@ -187,1168 +1136,312 @@
 
     </section>
 
+    <!-- ==========================================
+         FOOTER MESSAGE
+    =========================================== -->
 
-
-    <!-- =====================================================
-         DASHBOARD BODY
-    ====================================================== -->
-
-    <div
-      class="mt-6 grid gap-6
-             lg:grid-cols-[minmax(0,1fr)_280px]"
+    <footer
+      class="mt-7 rounded-2xl border border-stone-200/80
+             bg-white/70 px-6 py-5"
     >
 
-
-      <!-- ===================================================
-           MAIN CONTENT
-      ==================================================== -->
-
-      <main class="min-w-0 space-y-6">
-
-
-        <!-- ===============================================
-             STATUS CARDS
-        ================================================ -->
-
-        <section
-          aria-label="{{ 'خلاصه نوشته‌ها'
-                        if lang == 'fa'
-                        else 'Article summary' }}"
-          class="grid grid-cols-2 gap-3 sm:grid-cols-4"
-        >
-
-
-          <!-- Drafts -->
-
-          <div
-            class="rounded-2xl border border-stone-200
-                   bg-white/95 p-4 shadow-sm
-                   transition-all duration-200
-                   hover:-translate-y-0.5
-                   hover:shadow-md"
-          >
-
-            <div class="flex items-start justify-between gap-3">
-
-              <div>
-
-                <p
-                  class="text-xs font-semibold
-                         {{ 'tracking-normal'
-                            if lang == 'fa'
-                            else 'uppercase tracking-[0.12em]' }}
-                         text-slate-400"
-                >
-                  {{ 'پیش‌نویس'
-                     if lang == 'fa'
-                     else 'Drafts' }}
-                </p>
-
-                <p
-                  class="mt-2 font-serif text-3xl text-slate-900"
-                >
-                  3
-                </p>
-
-              </div>
-
-
-              <div
-                class="flex h-9 w-9 items-center justify-center
-                       rounded-xl bg-stone-100 text-slate-500"
-              >
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  aria-hidden="true"
-                  class="h-4 w-4"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4 4h12l4 4v12H4Z"
-                  ></path>
-
-                  <path
-                    stroke-linecap="round"
-                    d="M8 13h8M8 17h5"
-                  ></path>
-                </svg>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- In review -->
-
-          <div
-            class="rounded-2xl border border-stone-200
-                   bg-white/95 p-4 shadow-sm
-                   transition-all duration-200
-                   hover:-translate-y-0.5
-                   hover:shadow-md"
-          >
-
-            <div class="flex items-start justify-between gap-3">
-
-              <div>
-
-                <p
-                  class="text-xs font-semibold
-                         {{ 'tracking-normal'
-                            if lang == 'fa'
-                            else 'uppercase tracking-[0.12em]' }}
-                         text-slate-400"
-                >
-                  {{ 'در حال بررسی'
-                     if lang == 'fa'
-                     else 'In review' }}
-                </p>
-
-                <p class="mt-2 font-serif text-3xl text-slate-900">
-                  2
-                </p>
-
-              </div>
-
-
-              <div
-                class="flex h-9 w-9 items-center justify-center
-                       rounded-xl bg-amber-50 text-amber-700"
-              >
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  aria-hidden="true"
-                  class="h-4 w-4"
-                >
-                  <circle cx="12" cy="12" r="8"></circle>
-
-                  <path
-                    stroke-linecap="round"
-                    d="M12 8v5l3 2"
-                  ></path>
-                </svg>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- Changes -->
-
-          <div
-            class="rounded-2xl border border-stone-200
-                   bg-white/95 p-4 shadow-sm
-                   transition-all duration-200
-                   hover:-translate-y-0.5
-                   hover:shadow-md"
-          >
-
-            <div class="flex items-start justify-between gap-3">
-
-              <div>
-
-                <p
-                  class="text-xs font-semibold
-                         {{ 'tracking-normal'
-                            if lang == 'fa'
-                            else 'uppercase tracking-[0.12em]' }}
-                         text-slate-400"
-                >
-                  {{ 'نیازمند ویرایش'
-                     if lang == 'fa'
-                     else 'Revisions' }}
-                </p>
-
-                <p class="mt-2 font-serif text-3xl text-slate-900">
-                  1
-                </p>
-
-              </div>
-
-
-              <div
-                class="flex h-9 w-9 items-center justify-center
-                       rounded-xl bg-rose-50 text-rose-700"
-              >
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  aria-hidden="true"
-                  class="h-4 w-4"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16Z"
-                  ></path>
-                </svg>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- Published -->
-
-          <div
-            class="rounded-2xl border border-stone-200
-                   bg-white/95 p-4 shadow-sm
-                   transition-all duration-200
-                   hover:-translate-y-0.5
-                   hover:shadow-md"
-          >
-
-            <div class="flex items-start justify-between gap-3">
-
-              <div>
-
-                <p
-                  class="text-xs font-semibold
-                         {{ 'tracking-normal'
-                            if lang == 'fa'
-                            else 'uppercase tracking-[0.12em]' }}
-                         text-slate-400"
-                >
-                  {{ 'منتشر شده'
-                     if lang == 'fa'
-                     else 'Published' }}
-                </p>
-
-                <p class="mt-2 font-serif text-3xl text-slate-900">
-                  12
-                </p>
-
-              </div>
-
-
-              <div
-                class="flex h-9 w-9 items-center justify-center
-                       rounded-xl bg-teal-50 text-teal-700"
-              >
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  aria-hidden="true"
-                  class="h-4 w-4"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m5 12 4 4L19 6"
-                  ></path>
-                </svg>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-
-        <!-- ===============================================
-             MY ARTICLES
-        ================================================ -->
-
-        <section
-          class="overflow-hidden rounded-3xl
-                 border border-stone-200
-                 bg-white/95 shadow-sm"
-        >
-
-          <!-- Header -->
-
-          <div
-            class="flex flex-col gap-4
-                   border-b border-stone-200
-                   px-5 py-5
-                   sm:flex-row sm:items-center
-                   sm:justify-between sm:px-6"
-          >
-
-            <div>
-
-              <p
-                class="text-xs font-semibold
-                       {{ 'tracking-normal'
-                          if lang == 'fa'
-                          else 'uppercase tracking-[0.18em]' }}
-                       text-teal-700"
-              >
-                {{ 'آثار من'
-                   if lang == 'fa'
-                   else 'My work' }}
-              </p>
-
-              <h2
-                class="mt-1 font-serif text-2xl text-slate-900"
-              >
-                {{ 'مقاله‌های شما'
-                   if lang == 'fa'
-                   else 'Your articles' }}
-              </h2>
-
-            </div>
-
-
-            <!-- Filter -->
-
-            <div class="flex items-center gap-2">
-
-              <label for="article-filter" class="sr-only">
-                {{ 'فیلتر مقاله‌ها'
-                   if lang == 'fa'
-                   else 'Filter articles' }}
-              </label>
-
-              <select
-                id="article-filter"
-                class="rounded-xl border border-stone-300
-                       bg-stone-50 px-3 py-2
-                       text-sm text-slate-700
-                       outline-none transition
-                       focus:border-teal-700
-                       focus:ring-4 focus:ring-teal-700/10"
-              >
-                <option>
-                  {{ 'همه نوشته‌ها'
-                     if lang == 'fa'
-                     else 'All articles' }}
-                </option>
-
-                <option>
-                  {{ 'پیش‌نویس‌ها'
-                     if lang == 'fa'
-                     else 'Drafts' }}
-                </option>
-
-                <option>
-                  {{ 'در حال بررسی'
-                     if lang == 'fa'
-                     else 'In review' }}
-                </option>
-
-                <option>
-                  {{ 'منتشر شده'
-                     if lang == 'fa'
-                     else 'Published' }}
-                </option>
-              </select>
-
-            </div>
-
-          </div>
-
-
-
-          <!-- =============================================
-               ARTICLE 1 — REVISION REQUESTED
-          ============================================== -->
-
-          <article
-            class="group border-b border-stone-200
-                   px-5 py-5 transition-colors
-                   hover:bg-stone-50/80 sm:px-6"
-          >
-
-            <div
-              class="flex flex-col gap-4
-                     md:flex-row md:items-center
-                     md:justify-between"
-            >
-
-              <div class="min-w-0">
-
-                <div
-                  class="mb-2 flex flex-wrap items-center gap-2"
-                >
-
-                  <span
-                    class="inline-flex items-center rounded-full
-                           bg-rose-50 px-2.5 py-1
-                           text-xs font-semibold text-rose-700"
-                  >
-                    {{ 'نیازمند ویرایش'
-                       if lang == 'fa'
-                       else 'Changes requested' }}
-                  </span>
-
-                  <span class="text-xs text-slate-400">
-                    {{ 'داستان'
-                       if lang == 'fa'
-                       else 'Story' }}
-                  </span>
-
-                </div>
-
-
-                <h3
-                  class="truncate font-serif text-lg
-                         text-slate-900 transition-colors
-                         group-hover:text-teal-900"
-                >
-                  {{ 'پاییز در تهران'
-                     if lang == 'fa'
-                     else 'Autumn in Tehran' }}
-                </h3>
-
-
-                <p
-                  class="mt-1 text-sm leading-6 text-slate-500"
-                >
-                  {% if lang == 'fa' %}
-                    سردبیر برای این نوشته بازخورد ارسال کرده است.
-                  {% else %}
-                    Editorial feedback is waiting for your revision.
-                  {% endif %}
-                </p>
-
-
-                <p class="mt-2 text-xs text-slate-400">
-                  {{ 'آخرین ویرایش: امروز'
-                     if lang == 'fa'
-                     else 'Last edited today' }}
-                </p>
-
-              </div>
-
-
-              <div class="flex shrink-0 items-center gap-2">
-
-                <a
-                  href="#"
-                  class="inline-flex items-center justify-center
-                         rounded-xl border border-stone-300
-                         bg-white px-4 py-2
-                         text-sm font-semibold text-slate-700
-                         transition-all
-                         hover:border-teal-700
-                         hover:text-teal-800
-                         focus-visible:outline-2
-                         focus-visible:outline-offset-2
-                         focus-visible:outline-teal-700"
-                >
-                  {{ 'مشاهده بازخورد'
-                     if lang == 'fa'
-                     else 'View feedback' }}
-                </a>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-
-          <!-- =============================================
-               ARTICLE 2 — IN REVIEW
-          ============================================== -->
-
-          <article
-            class="group border-b border-stone-200
-                   px-5 py-5 transition-colors
-                   hover:bg-stone-50/80 sm:px-6"
-          >
-
-            <div
-              class="flex flex-col gap-4
-                     md:flex-row md:items-center
-                     md:justify-between"
-            >
-
-              <div class="min-w-0">
-
-                <div class="mb-2 flex flex-wrap items-center gap-2">
-
-                  <span
-                    class="inline-flex items-center rounded-full
-                           bg-amber-50 px-2.5 py-1
-                           text-xs font-semibold text-amber-700"
-                  >
-                    {{ 'در حال بررسی'
-                       if lang == 'fa'
-                       else 'In review' }}
-                  </span>
-
-                  <span class="text-xs text-slate-400">
-                    {{ 'نقد'
-                       if lang == 'fa'
-                       else 'Criticism' }}
-                  </span>
-
-                </div>
-
-
-                <h3
-                  class="truncate font-serif text-lg
-                         text-slate-900 transition-colors
-                         group-hover:text-teal-900"
-                >
-                  {{ 'حافظه و زبان'
-                     if lang == 'fa'
-                     else 'Memory and Language' }}
-                </h3>
-
-
-                <p class="mt-1 text-sm leading-6 text-slate-500">
-                  {% if lang == 'fa' %}
-                    این نوشته برای بررسی به تحریریه ارسال شده است.
-                  {% else %}
-                    This article has been submitted to the editorial desk.
-                  {% endif %}
-                </p>
-
-
-                <p class="mt-2 text-xs text-slate-400">
-                  {{ 'ارسال شده: دیروز'
-                     if lang == 'fa'
-                     else 'Submitted yesterday' }}
-                </p>
-
-              </div>
-
-
-              <span
-                class="shrink-0 text-sm font-medium text-slate-400"
-              >
-                {{ 'در انتظار بررسی'
-                   if lang == 'fa'
-                   else 'Awaiting review' }}
-              </span>
-
-            </div>
-
-          </article>
-
-
-
-          <!-- =============================================
-               ARTICLE 3 — DRAFT
-          ============================================== -->
-
-          <article
-            class="group border-b border-stone-200
-                   px-5 py-5 transition-colors
-                   hover:bg-stone-50/80 sm:px-6"
-          >
-
-            <div
-              class="flex flex-col gap-4
-                     md:flex-row md:items-center
-                     md:justify-between"
-            >
-
-              <div class="min-w-0">
-
-                <div class="mb-2 flex flex-wrap items-center gap-2">
-
-                  <span
-                    class="inline-flex items-center rounded-full
-                           bg-stone-100 px-2.5 py-1
-                           text-xs font-semibold text-slate-600"
-                  >
-                    {{ 'پیش‌نویس'
-                       if lang == 'fa'
-                       else 'Draft' }}
-                  </span>
-
-                  <span class="text-xs text-slate-400">
-                    {{ 'گزارش'
-                       if lang == 'fa'
-                       else 'Report' }}
-                  </span>
-
-                </div>
-
-
-                <h3
-                  class="truncate font-serif text-lg
-                         text-slate-900 transition-colors
-                         group-hover:text-teal-900"
-                >
-                  {{ 'شهر خاموش'
-                     if lang == 'fa'
-                     else 'The Silent City' }}
-                </h3>
-
-
-                <p class="mt-1 text-sm leading-6 text-slate-500">
-                  {% if lang == 'fa' %}
-                    این نوشته هنوز برای تحریریه ارسال نشده است.
-                  {% else %}
-                    Continue writing before submitting this article.
-                  {% endif %}
-                </p>
-
-
-                <p class="mt-2 text-xs text-slate-400">
-                  {{ 'آخرین ذخیره: ۲ ساعت پیش'
-                     if lang == 'fa'
-                     else 'Saved 2 hours ago' }}
-                </p>
-
-              </div>
-
-
-              <a
-                href="#"
-                class="inline-flex shrink-0 items-center
-                       justify-center gap-2 rounded-xl
-                       bg-teal-900 px-4 py-2
-                       text-sm font-semibold text-white
-                       transition-all
-                       hover:-translate-y-0.5
-                       hover:bg-teal-800
-                       hover:shadow-md
-                       focus-visible:outline-2
-                       focus-visible:outline-offset-2
-                       focus-visible:outline-teal-800
-                       motion-reduce:transform-none"
-              >
-                {{ 'ادامه نوشتن'
-                   if lang == 'fa'
-                   else 'Continue writing' }}
-
-                <span aria-hidden="true">
-                  {{ '←' if lang == 'fa' else '→' }}
-                </span>
-              </a>
-
-            </div>
-
-          </article>
-
-
-
-          <!-- =============================================
-               ARTICLE 4 — PUBLISHED
-          ============================================== -->
-
-          <article
-            class="group px-5 py-5
-                   transition-colors hover:bg-stone-50/80
-                   sm:px-6"
-          >
-
-            <div
-              class="flex flex-col gap-4
-                     md:flex-row md:items-center
-                     md:justify-between"
-            >
-
-              <div class="min-w-0">
-
-                <div class="mb-2 flex flex-wrap items-center gap-2">
-
-                  <span
-                    class="inline-flex items-center rounded-full
-                           bg-teal-50 px-2.5 py-1
-                           text-xs font-semibold text-teal-700"
-                  >
-                    {{ 'منتشر شده'
-                       if lang == 'fa'
-                       else 'Published' }}
-                  </span>
-
-                  <span class="text-xs text-slate-400">
-                    {{ 'داستان'
-                       if lang == 'fa'
-                       else 'Story' }}
-                  </span>
-
-                </div>
-
-
-                <h3
-                  class="truncate font-serif text-lg
-                         text-slate-900 transition-colors
-                         group-hover:text-teal-900"
-                >
-                  {{ 'داستان خانه'
-                     if lang == 'fa'
-                     else 'A Story of Home' }}
-                </h3>
-
-
-                <p class="mt-1 text-sm leading-6 text-slate-500">
-                  {% if lang == 'fa' %}
-                    این نوشته توسط تحریریه تأیید و منتشر شده است.
-                  {% else %}
-                    Approved by the editorial desk and now published.
-                  {% endif %}
-                </p>
-
-
-                <p class="mt-2 text-xs text-slate-400">
-                  {{ 'منتشر شده: ۲۰ اکتبر'
-                     if lang == 'fa'
-                     else 'Published Oct 20' }}
-                </p>
-
-              </div>
-
-
-              <a
-                href="#"
-                class="inline-flex shrink-0 items-center
-                       justify-center rounded-xl
-                       border border-stone-300
-                       bg-white px-4 py-2
-                       text-sm font-semibold text-slate-700
-                       transition-all
-                       hover:border-teal-700
-                       hover:text-teal-800
-                       focus-visible:outline-2
-                       focus-visible:outline-offset-2
-                       focus-visible:outline-teal-700"
-              >
-                {{ 'مشاهده مقاله'
-                   if lang == 'fa'
-                   else 'View article' }}
-              </a>
-
-            </div>
-
-          </article>
-
-
-          <!-- Footer -->
-
-          <div
-            class="border-t border-stone-200
-                   bg-stone-50/60 px-5 py-4 sm:px-6"
-          >
-
-            <a
-              href="#"
-              class="inline-flex items-center gap-2
-                     text-sm font-semibold text-teal-800
-                     underline-offset-4
-                     hover:underline
-                     focus-visible:outline-2
-                     focus-visible:outline-offset-4
-                     focus-visible:outline-teal-700"
-            >
-              {{ 'مشاهده همه نوشته‌ها'
-                 if lang == 'fa'
-                 else 'View all articles' }}
-
-              <span aria-hidden="true">
-                {{ '←' if lang == 'fa' else '→' }}
-              </span>
-            </a>
-
-          </div>
-
-        </section>
-
-      </main>
-
-
-
-      <!-- ===================================================
-           SIDEBAR
-      ==================================================== -->
-
-      <aside class="space-y-5">
-
-
-        <!-- ===============================================
-             WRITER PROFILE
-        ================================================ -->
-
-        <section
-          class="rounded-3xl border border-stone-200
-                 bg-white/95 p-5 shadow-sm"
-        >
-
-          <div class="flex items-center gap-3">
-
-            <!-- Temporary avatar -->
-
-            <div
-              class="flex h-12 w-12 shrink-0
-                     items-center justify-center
-                     rounded-full bg-teal-900
-                     font-serif text-lg text-white
-                     shadow-sm"
-            >
-              W
-            </div>
-
-
-            <div class="min-w-0">
-
-              <p
-                class="truncate font-semibold text-slate-900"
-              >
-                {{ 'نویسنده قلم نویس'
-                   if lang == 'fa'
-                   else 'Qalam Nevis Writer' }}
-              </p>
-
-              <p class="mt-0.5 text-xs text-slate-500">
-                @writer
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div
-            class="mt-5 border-t border-stone-200 pt-4"
-          >
-
-            <a
-              href="#"
-              class="flex items-center justify-between
-                     rounded-xl px-3 py-2.5
-                     text-sm font-medium text-slate-600
-                     transition-colors
-                     hover:bg-teal-50
-                     hover:text-teal-900
-                     focus-visible:outline-2
-                     focus-visible:outline-teal-700"
-            >
-              <span>
-                {{ 'ویرایش پروفایل'
-                   if lang == 'fa'
-                   else 'Edit profile' }}
-              </span>
-
-              <span aria-hidden="true">
-                {{ '←' if lang == 'fa' else '→' }}
-              </span>
-            </a>
-
-          </div>
-
-        </section>
-
-
-
-        <!-- ===============================================
-             EDITORIAL MESSAGE
-        ================================================ -->
-
-        <section
-          class="rounded-3xl border border-teal-900/10
-                 bg-teal-950 p-5 text-white
-                 shadow-sm"
-        >
-
-          <div
-            class="flex h-9 w-9 items-center
-                   justify-center rounded-xl
-                   bg-white/10 text-teal-200"
-          >
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.7"
-              aria-hidden="true"
-              class="h-4 w-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4 5h16v11H8l-4 4Z"
-              ></path>
-            </svg>
-
-          </div>
-
-
-          <p
-            class="mt-4 text-xs font-semibold
-                   {{ 'tracking-normal'
-                      if lang == 'fa'
-                      else 'uppercase tracking-[0.15em]' }}
-                   text-teal-300"
-          >
-            {{ 'از تحریریه'
-               if lang == 'fa'
-               else 'From the editors' }}
-          </p>
-
-
-          <h2
-            class="mt-2 font-serif text-lg text-white"
-          >
-            {{ 'یک نوشته نیازمند توجه شماست'
-               if lang == 'fa'
-               else 'One article needs your attention' }}
-          </h2>
-
-
-          <p
-            class="mt-2 text-sm leading-6 text-teal-100/70"
-          >
-            {% if lang == 'fa' %}
-
-              تحریریه برای «پاییز در تهران»
-              پیشنهادهایی ارسال کرده است.
-
-            {% else %}
-
-              The editorial desk has left feedback
-              on “Autumn in Tehran.”
-
-            {% endif %}
-          </p>
-
-
-          <a
-            href="#"
-            class="mt-4 inline-flex items-center gap-2
-                   text-sm font-semibold text-teal-200
-                   underline-offset-4
-                   hover:text-white hover:underline
-                   focus-visible:outline-2
-                   focus-visible:outline-offset-4
-                   focus-visible:outline-white"
-          >
-            {{ 'مشاهده بازخورد'
-               if lang == 'fa'
-               else 'Read feedback' }}
-
-            <span aria-hidden="true">
-              {{ '←' if lang == 'fa' else '→' }}
-            </span>
-          </a>
-
-        </section>
-
-
-
-        <!-- ===============================================
-             WRITING WORKFLOW
-        ================================================ -->
-
-        <section
-          class="rounded-3xl border border-stone-200
-                 bg-white/95 p-5 shadow-sm"
-        >
-
-          <p
-            class="text-xs font-semibold
-                   {{ 'tracking-normal'
-                      if lang == 'fa'
-                      else 'uppercase tracking-[0.15em]' }}
-                   text-teal-700"
-          >
-            {{ 'فرآیند انتشار'
-               if lang == 'fa'
-               else 'Publishing workflow' }}
-          </p>
-
-
-          <h2
-            class="mt-2 font-serif text-lg text-slate-900"
-          >
-            {{ 'از پیش‌نویس تا انتشار'
-               if lang == 'fa'
-               else 'From draft to publication' }}
-          </h2>
-
-
-          <ol class="mt-5 space-y-4">
-
-            <li class="flex gap-3">
-
-              <span
-                class="flex h-7 w-7 shrink-0
-                       items-center justify-center
-                       rounded-full bg-teal-900
-                       text-xs font-semibold text-white"
-              >
-                1
-              </span>
-
-              <div>
-
-                <p class="text-sm font-semibold text-slate-800">
-                  {{ 'بنویسید'
-                     if lang == 'fa'
-                     else 'Write' }}
-                </p>
-
-                <p class="mt-0.5 text-xs leading-5 text-slate-500">
-                  {{ 'مقاله خود را به‌صورت پیش‌نویس آماده کنید.'
-                     if lang == 'fa'
-                     else 'Develop and save your article as a draft.' }}
-                </p>
-
-              </div>
-
-            </li>
-
-
-            <li class="flex gap-3">
-
-              <span
-                class="flex h-7 w-7 shrink-0
-                       items-center justify-center
-                       rounded-full bg-teal-50
-                       text-xs font-semibold text-teal-800"
-              >
-                2
-              </span>
-
-              <div>
-
-                <p class="text-sm font-semibold text-slate-800">
-                  {{ 'ارسال کنید'
-                     if lang == 'fa'
-                     else 'Submit' }}
-                </p>
-
-                <p class="mt-0.5 text-xs leading-5 text-slate-500">
-                  {{ 'نوشته را برای تحریریه ارسال کنید.'
-                     if lang == 'fa'
-                     else 'Send finished work to the editorial desk.' }}
-                </p>
-
-              </div>
-
-            </li>
-
-
-            <li class="flex gap-3">
-
-              <span
-                class="flex h-7 w-7 shrink-0
-                       items-center justify-center
-                       rounded-full bg-teal-50
-                       text-xs font-semibold text-teal-800"
-              >
-                3
-              </span>
-
-              <div>
-
-                <p class="text-sm font-semibold text-slate-800">
-                  {{ 'بازبینی'
-                     if lang == 'fa'
-                     else 'Review' }}
-                </p>
-
-                <p class="mt-0.5 text-xs leading-5 text-slate-500">
-                  {{ 'بازخورد تحریریه را دریافت و اصلاحات را انجام دهید.'
-                     if lang == 'fa'
-                     else 'Receive editorial feedback and make revisions.' }}
-                </p>
-
-              </div>
-
-            </li>
-
-
-            <li class="flex gap-3">
-
-              <span
-                class="flex h-7 w-7 shrink-0
-                       items-center justify-center
-                       rounded-full bg-teal-50
-                       text-xs font-semibold text-teal-800"
-              >
-                4
-              </span>
-
-              <div>
-
-                <p class="text-sm font-semibold text-slate-800">
-                  {{ 'انتشار'
-                     if lang == 'fa'
-                     else 'Publish' }}
-                </p>
-
-                <p class="mt-0.5 text-xs leading-5 text-slate-500">
-                  {{ 'پس از تأیید تحریریه، نوشته منتشر می‌شود.'
-                     if lang == 'fa'
-                     else 'Approved work is prepared for publication.' }}
-                </p>
-
-              </div>
-
-            </li>
-
-          </ol>
-
-        </section>
-
-      </aside>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         BOTTOM MESSAGE
-    ====================================================== -->
-
-    <div
-      class="mt-6 flex flex-col gap-3
-             rounded-2xl border border-stone-200
-             bg-white/70 px-5 py-4
-             text-sm text-slate-500
-             sm:flex-row sm:items-center
-             sm:justify-between"
-    >
-
-      <p>
-        {% if lang == 'fa' %}
-          نوشته‌های شما تا پیش از تأیید تحریریه برای عموم منتشر نمی‌شوند.
-        {% else %}
-          Your drafts remain private until approved by the editorial desk.
-        {% endif %}
-      </p>
-
-
-      <a
-        href="{{ url_for('home', lang=lang) }}"
-        class="shrink-0 font-medium text-teal-800
-               underline-offset-4 hover:underline
-               focus-visible:outline-2
-               focus-visible:outline-offset-4
-               focus-visible:outline-teal-700"
+      <div
+        class="flex flex-col items-center gap-4
+               text-center sm:flex-row
+               sm:justify-between sm:text-start"
       >
-        {{ 'بازگشت به قلم نویس'
-           if lang == 'fa'
-           else 'Return to Qalam Nevis' }}
-      </a>
 
-    </div>
+        <p class="text-xs leading-7 text-slate-500">
+          <span class="me-2 text-amber-700">✦</span>
+
+          {{ "پیش‌نویس‌های شما تا زمان تأیید تحریریه خصوصی می‌مانند."
+             if fa else
+             "Your drafts remain private until approved by the editorial desk." }}
+        </p>
+
+        <a
+          href="{{ url_for('home', lang=lang) }}"
+          class="shrink-0 text-xs font-bold text-teal-800
+                 underline-offset-4 hover:underline"
+        >
+          {{ "بازگشت به قلم نویس" if fa
+             else "Return to Qalam Nevis" }}
+
+          <span aria-hidden="true">
+            {{ "←" if fa else "→" }}
+          </span>
+        </a>
+
+      </div>
+
+    </footer>
 
   </div>
 
 </div>
+
+<!-- ==========================================
+     SEARCH, FILTERING AND PAGINATION
+     No custom CSS required.
+=========================================== -->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const grid = document.getElementById("article-grid");
+  const search = document.getElementById("article-search");
+  const filters = document.querySelectorAll(".article-filter");
+  const empty = document.getElementById("article-empty");
+  const pagination = document.getElementById("pagination");
+  const pageInfo = document.getElementById("page-info");
+  const libraryCount = document.getElementById("library-count");
+
+  if (!grid || !search) return;
+
+  const cards = Array.from(
+    grid.querySelectorAll(".article-card")
+  );
+
+  const isFarsi = document.getElementById("writer-dashboard").lang === "fa";
+  const perPage = 12;
+
+  let activeStatus = "all";
+  let currentPage = 1;
+
+  const activeClasses = [
+    "border-teal-900",
+    "bg-teal-900",
+    "text-white"
+  ];
+
+  const inactiveClasses = [
+    "border-stone-200",
+    "bg-white",
+    "text-slate-600",
+    "hover:border-teal-300",
+    "hover:bg-teal-50",
+    "hover:text-teal-900"
+  ];
+
+  function matchesStatus(status) {
+
+    if (activeStatus === "all") {
+      return true;
+    }
+
+    if (activeStatus === "review") {
+      return [
+        "submitted",
+        "in_review",
+        "approved"
+      ].includes(status);
+    }
+
+    return status === activeStatus;
+  }
+
+  function makePageButton(label, target, disabled, active = false) {
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.textContent = label;
+    button.disabled = disabled;
+
+    button.className = [
+      "flex",
+      "h-9",
+      "min-w-9",
+      "items-center",
+      "justify-center",
+      "rounded-lg",
+      "border",
+      "px-2",
+      "text-xs",
+      "font-semibold",
+      "transition-colors",
+      "focus-visible:outline-2",
+      "focus-visible:outline-teal-700",
+      active
+        ? "border-teal-900 bg-teal-900 text-white"
+        : "border-stone-200 bg-white text-teal-900 hover:bg-teal-50",
+      disabled ? "cursor-not-allowed opacity-40" : ""
+    ].join(" ");
+
+    if (active) {
+      button.setAttribute("aria-current", "page");
+    }
+
+    button.addEventListener("click", () => {
+      currentPage = target;
+      render();
+
+      document.getElementById("article-library")
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+    });
+
+    pagination.appendChild(button);
+  }
+
+  function renderPagination(totalPages) {
+
+    pagination.replaceChildren();
+
+    if (totalPages <= 1) {
+      return;
+    }
+
+    makePageButton(
+      isFarsi ? "›" : "‹",
+      currentPage - 1,
+      currentPage === 1
+    );
+
+    for (let page = 1; page <= totalPages; page++) {
+
+      makePageButton(
+        String(page),
+        page,
+        false,
+        page === currentPage
+      );
+    }
+
+    makePageButton(
+      isFarsi ? "‹" : "›",
+      currentPage + 1,
+      currentPage === totalPages
+    );
+  }
+
+  function render() {
+
+    const query = search.value.trim().toLocaleLowerCase();
+
+    const filtered = cards.filter(card => {
+
+      const title = card.dataset.title || "";
+      const status = card.dataset.status || "";
+
+      return (
+        title.toLocaleLowerCase().includes(query) &&
+        matchesStatus(status)
+      );
+    });
+
+    const totalPages = Math.max(
+      1,
+      Math.ceil(filtered.length / perPage)
+    );
+
+    currentPage = Math.min(currentPage, totalPages);
+
+    const start = (currentPage - 1) * perPage;
+    const end = start + perPage;
+
+    cards.forEach(card => {
+      card.hidden = true;
+      card.classList.add("hidden");
+    });
+
+    filtered.slice(start, end).forEach(card => {
+      card.hidden = false;
+      card.classList.remove("hidden");
+    });
+
+    empty.hidden = filtered.length !== 0;
+    empty.classList.toggle("hidden", filtered.length !== 0);
+
+    const first = filtered.length ? start + 1 : 0;
+    const last = Math.min(end, filtered.length);
+
+    pageInfo.textContent = isFarsi
+      ? `نمایش ${first} تا ${last} از ${filtered.length}`
+      : `Showing ${first}–${last} of ${filtered.length}`;
+
+    libraryCount.textContent = isFarsi
+      ? `${filtered.length} مقاله`
+      : `${filtered.length} articles`;
+
+    renderPagination(totalPages);
+  }
+
+  function setFilter(status) {
+
+    activeStatus = status;
+    currentPage = 1;
+
+    filters.forEach(button => {
+
+      const active = button.dataset.filter === status;
+
+      button.classList.remove(
+        ...activeClasses,
+        ...inactiveClasses
+      );
+
+      button.classList.add(
+        ...(active ? activeClasses : inactiveClasses)
+      );
+
+      button.setAttribute(
+        "aria-pressed",
+        String(active)
+      );
+    });
+
+    render();
+  }
+
+  search.addEventListener("input", () => {
+    currentPage = 1;
+    render();
+  });
+
+  filters.forEach(button => {
+    button.addEventListener("click", () => {
+      setFilter(button.dataset.filter);
+    });
+  });
+
+  const attentionButton =
+    document.getElementById("attention-filter");
+
+  if (attentionButton) {
+    attentionButton.addEventListener("click", () => {
+
+      setFilter("changes_requested");
+
+      document.getElementById("article-library")
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+    });
+  }
+
+  const continueButton =
+    document.getElementById("continue-draft");
+
+  if (continueButton) {
+    continueButton.addEventListener("click", () => {
+
+      setFilter("draft");
+
+      document.getElementById("article-library")
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+    });
+  }
+
+  render();
+
+});
+</script>
 
 {% endblock %}
