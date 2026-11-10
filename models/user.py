@@ -16,6 +16,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .extensions import db
 
+from flask_login import UserMixin
+
 if TYPE_CHECKING:
   from .article import Article
   from .media_asset import MediaAsset
@@ -25,7 +27,7 @@ if TYPE_CHECKING:
   from .article_revision import ArticleRevision
   from .user_role import UserRole
 
-class User(db.Model):
+class User(UserMixin, db.Model):
   __tablename__ = "users"
 
   

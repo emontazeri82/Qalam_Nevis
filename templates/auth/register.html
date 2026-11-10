@@ -293,12 +293,20 @@
           ================================================== -->
 
           <form
-            action="#"
+            action="{{ url_for('auth.register', lang=lang) }}"
             method="post"
             class="mt-6 space-y-4"
           >
-
-
+            {{ form.hidden_tag() }}
+            {% if form.form_errors %}
+                <div role="alert" class="rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+                    {% for error in form.form_errors %}
+                        <p class="text-sm text-red-600">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <!-- Full name -->
             <div>
 
@@ -358,6 +366,7 @@
                                   if lang == 'fa'
                                   else 'Your full name' }}"
                   required
+                  value="{{ form.name.data or '' }}"
                   class="block w-full rounded-xl
                          border border-stone-300
                          bg-stone-50
@@ -375,7 +384,11 @@
                          focus:ring-4
                          focus:ring-teal-700/10"
                 >
-
+                {% for error in form.name.errors %}
+                  <p class="mt-1 text-sm text-red-600">
+                      {{ error }}
+                  </p>
+                {% endfor %}
               </div>
 
             </div>
@@ -426,6 +439,8 @@
                                   if lang == 'fa'
                                   else 'Choose a username' }}"
                   required
+                  value="{{ form.username.data or '' }}"
+                  aria-invalid="{{ 'true' if form.username.errors else 'false' }}"
                   class="block w-full rounded-xl
                         border border-stone-300
                         bg-stone-50
@@ -443,6 +458,11 @@
                         focus:ring-4
                         focus:ring-teal-700/10"
                 >
+                {% for error in form.username.errors %}
+                    <p class="mt-1 text-sm text-red-600">
+                        {{ error }}
+                    </p>
+                {% endfor %}
 
               </div>
 
@@ -508,6 +528,7 @@
                   placeholder="writer@example.com"
                   required
                   dir="ltr"
+                  value="{{ form.email.data or ''}}"
                   class="block w-full rounded-xl
                          border border-stone-300
                          bg-stone-50
@@ -525,6 +546,11 @@
                          focus:ring-4
                          focus:ring-teal-700/10"
                 >
+                {% for error in form.email.errors %}
+                  <p class="mt-1 text-sm text-red-600">
+                    {{error}}
+                  </p>
+                {% endfor %}
 
               </div>
 
@@ -611,7 +637,11 @@
                          focus:ring-4
                          focus:ring-teal-700/10"
                 >
-
+                {% for error in form.password.errors %}
+                  <p class="mt-1 text-sm text-red-600">
+                    {{ error }}
+                  </p>
+                {% endfor %}
               </div>
 
             </div>
@@ -697,7 +727,11 @@
                          focus:ring-4
                          focus:ring-teal-700/10"
                 >
-
+                {% for error in form.confirm_password.errors %}
+                  <p class="mt-1 text-sm text-red-600">
+                    {{ error }}
+                  </p>
+                {% endfor %}
               </div>
 
             </div>
@@ -773,7 +807,7 @@
 
 
             <a
-              href="{{ url_for('login', lang=lang) }}"
+              href="{{ url_for('auth.login', lang=lang) }}"
               class="mt-4 flex w-full
                      items-center justify-center
                      rounded-xl

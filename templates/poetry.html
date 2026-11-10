@@ -1,0 +1,208 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+{% set is_fa = lang == 'fa' %}
+
+<div class="mx-auto max-w-6xl text-slate-800">
+
+  <!-- Page introduction -->
+  <header data-reveal class="border-b border-stone-300 pb-7">
+    <a
+      href="{{ url_for('home', lang=lang) }}"
+      class="rounded text-xs font-medium text-teal-800
+             underline-offset-4 hover:underline
+             focus-visible:outline-2 focus-visible:outline-offset-4
+             focus-visible:outline-teal-700"
+    >
+      {{ 'قلم‌نویس / خانه' if is_fa
+         else 'Qalam Nevis / Home' }}
+    </a>
+
+    <div class="mt-6 flex flex-wrap items-end justify-between gap-5">
+      <div class="max-w-xl">
+
+        <!-- Poetry category label -->
+        <p class="flex items-center gap-3 text-xs font-semibold text-violet-800">
+          <span
+            aria-hidden="true"
+            class="h-px w-8 bg-violet-800/40"
+          ></span>
+
+          {{ 'واژه، احساس، خیال' if is_fa
+             else 'Words, emotion, imagination' }}
+        </p>
+
+        <!-- Page title -->
+        <h1
+          class="mt-3 text-4xl leading-relaxed text-slate-900 sm:text-5xl
+                 {{ 'font-medium' if is_fa else 'font-serif' }}"
+        >
+          {{ 'شعر' if is_fa else 'Poetry' }}
+        </h1>
+
+        <!-- Description -->
+        <p class="mt-3 text-base leading-loose text-slate-600">
+          {{ 'خانه‌ای برای شعر، احساس و اندیشه؛ جایی که واژه‌ها به زبان دل سخن می‌گویند.'
+             if is_fa
+             else 'A home for poetry, emotion, and reflection, where words give voice to the heart.' }}
+        </p>
+      </div>
+
+      <!-- Poetry count -->
+      <p class="text-sm text-slate-600">
+        <span class="font-semibold text-teal-900">
+          {{ poetry_articles | length }}
+        </span>
+
+        {{ 'شعر' if is_fa else 'poems' }}
+      </p>
+    </div>
+  </header>
+
+  <!-- Language filters and sorting preview -->
+  <div class="border-b border-stone-200 py-5">
+    <fieldset
+      disabled
+      aria-describedby="poetry-filter-note"
+      class="flex flex-wrap items-center justify-between gap-4"
+    >
+      <legend class="sr-only">
+        {{ 'پیش‌نمایش فیلتر شعرها' if is_fa
+           else 'Poetry filter preview' }}
+      </legend>
+
+      <!-- Language filters -->
+      <div
+        class="flex flex-wrap gap-1 rounded-xl border
+               border-stone-200 bg-white/70 p-1"
+      >
+        <button
+          type="button"
+          class="cursor-not-allowed rounded-lg
+                 bg-teal-800 px-4 py-2
+                 text-sm font-medium text-white"
+        >
+          {{ 'همه' if is_fa else 'All languages' }}
+        </button>
+
+        <button
+          type="button"
+          lang="fa"
+          class="cursor-not-allowed rounded-lg
+                 px-4 py-2 text-sm text-slate-500"
+        >
+          فارسی
+        </button>
+
+        <button
+          type="button"
+          lang="en"
+          class="cursor-not-allowed rounded-lg
+                 px-4 py-2 text-sm text-slate-500"
+        >
+          English
+        </button>
+      </div>
+
+      <!-- Sorting -->
+      <div class="flex flex-wrap items-center gap-2">
+        <label
+          for="poetry-sort-preview"
+          class="text-xs text-slate-600"
+        >
+          {{ 'ترتیب نمایش' if is_fa else 'Order by' }}
+        </label>
+
+        <select
+          id="poetry-sort-preview"
+          class="cursor-not-allowed rounded-lg
+                 border border-stone-300 bg-white
+                 px-3 py-2 text-sm text-slate-500"
+        >
+          <option>
+            {{ 'تازه‌ترین' if is_fa else 'Newest first' }}
+          </option>
+
+          <option>
+            {{ 'قدیمی‌ترین' if is_fa else 'Oldest first' }}
+          </option>
+        </select>
+      </div>
+    </fieldset>
+
+    <p
+      id="poetry-filter-note"
+      class="mt-3 text-xs leading-relaxed text-slate-500"
+    >
+      {{ 'فیلترها و ترتیب نمایش فعلاً فقط بخشی از پیش‌نمایش طراحی هستند.'
+         if is_fa
+         else 'Language filters and sorting are currently design previews only.' }}
+    </p>
+  </div>
+
+  <!-- Demo content notice -->
+  {% if demo %}
+    <p
+      class="mt-5 border-s-2 border-amber-500
+             ps-3 text-xs leading-relaxed text-slate-500"
+    >
+      {{ 'شعرها، نام شاعران و تاریخ‌های انتشار نمونه هستند.'
+         if is_fa
+         else 'Poems, poet names, and publication dates are sample content.' }}
+    </p>
+  {% endif %}
+
+  <!-- Poetry article previews -->
+  {% if poetry_articles %}
+
+    {% with articles=poetry_articles,
+            detail_endpoint='article_detail',
+            source_section='poetry' %}
+      {% include "partials/article_grid.html" %}
+    {% endwith %}
+
+    <!-- Pagination -->
+    {% include "partials/pagination.html" %}
+
+  {% else %}
+
+    <!-- Empty poetry state -->
+    <div class="py-20 text-center">
+
+      <div
+        class="mx-auto flex h-16 w-16 items-center
+               justify-center rounded-full bg-violet-50"
+      >
+        <svg
+          class="h-8 w-8 text-violet-700"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M20 4c-7 0-12 4-14 11l-2 5"/>
+          <path d="M20 4c0 8-5 12-14 11"/>
+          <path d="M8 12c3-1 6-3 9-6"/>
+        </svg>
+      </div>
+
+      <h2 class="mt-5 font-serif text-2xl text-slate-900">
+        {{ 'هنوز شعری منتشر نشده است' if is_fa
+           else 'No poems published yet' }}
+      </h2>
+
+      <p class="mx-auto mt-3 max-w-md text-sm leading-loose text-slate-600">
+        {{ 'به‌زودی شعرهای تازه در این بخش منتشر خواهند شد.'
+           if is_fa
+           else 'New voices and verses will soon find their home here.' }}
+      </p>
+    </div>
+
+  {% endif %}
+
+</div>
+{% endblock %}

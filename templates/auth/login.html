@@ -290,11 +290,11 @@
           ================================================== -->
 
           <form
-            action="#"
+            action="{{ url_for('auth.login', lang=lang) }}"
             method="post"
             class="mt-6 space-y-4"
           >
-
+            {{ form.hidden_tag() }}
 
             <!-- Username -->
             <div>
@@ -584,7 +584,7 @@
 
 
             <a
-              href="{{ url_for('register', lang=lang) }}"
+              href="{{ url_for('auth.register', lang=lang) }}"
               class="mt-4 flex w-full
                      items-center justify-center
                      rounded-xl

@@ -193,9 +193,10 @@
 
         <div
           class="mt-9 flex flex-col gap-5
-                 border-t border-white/15 pt-6
-                 lg:flex-row lg:items-center
-                 lg:justify-between"
+              border-t border-white/15 pt-6
+              min-[800px]:flex-row
+              min-[800px]:items-center
+              min-[800px]:justify-between"
         >
 
           <!-- Writer identity -->
@@ -313,7 +314,9 @@
     =========================================== -->
 
     <section
-      class="grid gap-5 lg:grid-cols-2"
+      class="grid grid-cols-1 gap-4
+         min-[700px]:grid-cols-2
+         xl:gap-5"
       aria-label="{{ 'اقدامات مهم' if fa else 'Writing priorities' }}"
     >
 
@@ -598,7 +601,9 @@
 
       </div>
 
-      <div class="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-5">
+      <div class="grid grid-cols-2 gap-3
+            min-[700px]:grid-cols-4
+            xl:gap-5">
 
         {% set stats = [
           {
@@ -860,7 +865,9 @@
 
         <div
           id="article-grid"
-          class="grid grid-cols-1 gap-5 md:grid-cols-2"
+          class="grid grid-cols-1 gap-4
+                min-[640px]:grid-cols-2
+                xl:gap-5"
         >
 
           {% for article in articles %}

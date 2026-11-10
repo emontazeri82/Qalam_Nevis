@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html
   lang="{{ lang }}"
@@ -7,21 +8,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Qalam Nevis</title>
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='tailwind.css') }}?v=2"
     >
+
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/animation.js') }}"
+    ></script>
   </head>
-  <script
-    type="module"
-    src="{{ url_for('static', filename='js/animation.js') }}"
-  ></script>
-  <body class="flex flex-col min-h-screen bg-linear-to-br from-stone-50 via-teal-50 to-amber-50 font-sans text-slate-900">
+
+  <body class="flex min-h-screen flex-col bg-linear-to-br from-stone-50 via-teal-50 to-amber-50 font-sans text-slate-900">
+
     {% include "partials/navbar.html" %}
 
     <main class="page-enter mx-auto w-full max-w-6xl flex-1 px-5 py-12">
       {% block content %}{% endblock %}
     </main>
+
     {% include "partials/footer.html" %}
+
+    <!-- Mobile navigation controller -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const menuButton = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const openIcon = document.getElementById("menu-open-icon");
+        const closeIcon = document.getElementById("menu-close-icon");
+
+        if (!menuButton || !mobileMenu || !openIcon || !closeIcon) {
+          console.error("Navbar elements not found.");
+          return;
+        }
+
+        function setMenuOpen(isOpen) {
+          menuButton.setAttribute("aria-expanded", String(isOpen));
+
+          mobileMenu.classList.toggle("hidden", !isOpen);
+          mobileMenu.classList.toggle("grid", isOpen);
+
+          openIcon.classList.toggle("hidden", isOpen);
+          closeIcon.classList.toggle("hidden", !isOpen);
+        }
+
+        menuButton.addEventListener("click", () => {
+          const isOpen =
+            menuButton.getAttribute("aria-expanded") === "true";
+
+          setMenuOpen(!isOpen);
+        });
+
+        // Close the menu when Escape is pressed.
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            setMenuOpen(false);
+          }
+        });
+
+        // Reset mobile menu when switching to desktop.
+        const desktopQuery = window.matchMedia("(min-width: 1024px)");
+
+        desktopQuery.addEventListener("change", (event) => {
+          if (event.matches) {
+            setMenuOpen(false);
+          }
+        });
+      });
+    </script>
+
   </body>
 </html>
