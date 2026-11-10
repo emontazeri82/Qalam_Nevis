@@ -22,6 +22,7 @@
 
   <body class="flex min-h-screen flex-col bg-linear-to-br from-stone-50 via-teal-50 to-amber-50 font-sans text-slate-900">
 
+    {% include "partials/header.html"%}
     {% include "partials/navbar.html" %}
 
     <main class="page-enter mx-auto w-full max-w-6xl flex-1 px-5 py-12">
@@ -31,7 +32,7 @@
     {% include "partials/footer.html" %}
 
     <!-- Mobile navigation controller -->
-    <script>
+    <!-- <script>
       document.addEventListener("DOMContentLoaded", () => {
         const menuButton = document.getElementById("menu-toggle");
         const mobileMenu = document.getElementById("mobile-menu");
@@ -76,7 +77,7 @@
           }
         });
       });
-    </script>
+    </script> -->
 
   </body>
 </html>

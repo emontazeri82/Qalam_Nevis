@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html
+  lang="{{ lang }}"
+  dir="{{ 'rtl' if lang == 'fa' else 'ltr' }}"
+>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    {% block title %}Writer's Studio | Qalam Nevis{% endblock %}
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='tailwind.css') }}?v=2"
+  >
+
+  <script
+    type="module"
+    src="{{ url_for('static', filename='js/animation.js') }}"
+  ></script>
+</head>
+
+<body class="flex min-h-screen flex-col bg-linear-to-br from-stone-50 via-teal-50 to-amber-50 font-sans text-slate-900">
+
+  <!-- Shared branding only -->
+  {% include "partials/header.html" %}
+
+  <!-- Writer dashboard content -->
+  <main class="page-enter mx-auto w-full max-w-6xl flex-1 px-5 py-12">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "partials/footer.html" %}
+
+</body>
+</html>

@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}
@@ -12,7 +13,7 @@
   dir="{{ 'rtl' if lang == 'fa' else 'ltr' }}"
 >
 
-  <!-- Decorative page glow -->
+  <!-- Decorative background -->
   <div
     aria-hidden="true"
     class="pointer-events-none absolute -left-20 top-10
@@ -25,69 +26,56 @@
            h-64 w-64 rounded-full bg-amber-100/40 blur-3xl"
   ></div>
 
-
   <!-- Page container -->
   <div
-    class="relative z-10 mx-auto flex
-           max-w-6xl items-center justify-center
-           px-2 py-4 sm:px-4"
+    class="relative z-10 mx-auto flex max-w-6xl
+           items-center justify-center px-2 py-4 sm:px-4"
   >
 
     <!-- Login card -->
     <div
-      class="login-card-enter
-             grid w-full max-w-3xl overflow-hidden
-             rounded-3xl border border-white/60
+      class="login-card-enter grid w-full max-w-3xl
+             overflow-hidden rounded-3xl border border-white/60
              bg-white/95
              shadow-[0_30px_80px_-25px_rgba(15,23,42,0.35)]
-             backdrop-blur-sm
-             lg:grid-cols-2"
+             backdrop-blur-sm lg:grid-cols-2"
     >
 
-      <!-- =====================================================
+      <!-- ==========================================
            LEFT SIDE — QALAM NEVIS BRAND
-      ====================================================== -->
+      =========================================== -->
 
       <section
         class="relative overflow-hidden
-               bg-linear-to-br
-               from-teal-950 via-teal-900 to-slate-950
+               bg-linear-to-br from-teal-950
+               via-teal-900 to-slate-950
                px-6 py-8 text-stone-100
-               sm:px-8
-               lg:flex lg:flex-col
+               sm:px-8 lg:flex lg:flex-col
                lg:justify-between lg:p-8"
       >
 
         <!-- Decorative circles -->
         <div
           aria-hidden="true"
-          class="pointer-events-none absolute
-                 -right-24 -top-24
-                 h-72 w-72 rounded-full
-                 border border-teal-500/20"
+          class="pointer-events-none absolute -right-24 -top-24
+                 h-72 w-72 rounded-full border border-teal-500/20"
         ></div>
 
         <div
           aria-hidden="true"
-          class="pointer-events-none absolute
-                 -right-10 -top-10
-                 h-44 w-44 rounded-full
-                 border border-teal-400/10"
+          class="pointer-events-none absolute -right-10 -top-10
+                 h-44 w-44 rounded-full border border-teal-400/10"
         ></div>
 
         <div
           aria-hidden="true"
-          class="pointer-events-none absolute
-                 -bottom-32 -left-24
-                 h-80 w-80 rounded-full
-                 border border-teal-500/20"
+          class="pointer-events-none absolute -bottom-32 -left-24
+                 h-80 w-80 rounded-full border border-teal-500/20"
         ></div>
-
 
         <!-- Brand content -->
         <div class="relative z-10">
 
-          <!-- Logo / Site name -->
           <a
             href="{{ url_for('home', lang=lang) }}"
             class="inline-block rounded
@@ -115,7 +103,6 @@
 
           </a>
 
-
           <!-- Editorial introduction -->
           <div class="mt-8 max-w-sm">
 
@@ -138,11 +125,9 @@
 
             </div>
 
-
             <h1
               class="mt-4 font-serif text-2xl
-                     leading-tight text-white
-                     sm:text-3xl"
+                     leading-tight text-white sm:text-3xl"
             >
               {% if lang == 'fa' %}
                 مکانی آرام
@@ -155,11 +140,9 @@
               {% endif %}
             </h1>
 
-
             <p
-              class="mt-4 max-w-xs
-                     text-sm leading-7
-                     text-teal-100/80"
+              class="mt-4 max-w-xs text-sm
+                     leading-7 text-teal-100/80"
             >
               {% if lang == 'fa' %}
                 نوشته‌های خود را بنویسید، ویرایش کنید
@@ -174,8 +157,7 @@
 
         </div>
 
-
-        <!-- Bottom left message -->
+        <!-- Bottom brand message -->
         <div
           class="relative z-10 mt-8 hidden
                  border-t border-teal-700/50
@@ -184,35 +166,22 @@
 
           <div class="flex items-start gap-3">
 
-            <!-- Lock icon -->
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="1.7"
               aria-hidden="true"
-              class="mt-0.5 h-4 w-4 shrink-0
-                     text-teal-300"
+              class="mt-0.5 h-4 w-4 shrink-0 text-teal-300"
             >
-              <rect
-                x="5"
-                y="10"
-                width="14"
-                height="10"
-                rx="2"
-              ></rect>
-
+              <rect x="5" y="10" width="14" height="10" rx="2"></rect>
               <path
                 stroke-linecap="round"
                 d="M8 10V7a4 4 0 0 1 8 0v3"
               ></path>
             </svg>
 
-
-            <p
-              class="text-sm leading-6
-                     text-teal-100/70"
-            >
+            <p class="text-sm leading-6 text-teal-100/70">
               {% if lang == 'fa' %}
                 دسترسی خصوصی برای نویسندگان
                 و مدیران قلم نویس.
@@ -229,21 +198,16 @@
       </section>
 
 
-
-      <!-- =====================================================
+      <!-- ==========================================
            RIGHT SIDE — LOGIN FORM
-      ====================================================== -->
+      =========================================== -->
 
       <section
-        class="flex items-center
-               bg-white/95
-               px-6 py-8
-               sm:px-8
-               lg:px-8"
+        class="flex items-center bg-white/95
+               px-6 py-8 sm:px-8 lg:px-8"
       >
 
         <div class="mx-auto w-full max-w-sm">
-
 
           <!-- Heading -->
           <div>
@@ -258,19 +222,15 @@
                  else 'Welcome back' }}
             </p>
 
-
             <h2
-              class="mt-2 font-serif
-                     text-2xl text-slate-900"
+              class="mt-2 font-serif text-2xl text-slate-900"
             >
               {{ 'وارد حساب کاربری خود شوید' if lang == 'fa'
                  else 'Sign in to your account' }}
             </h2>
 
-
             <p
-              class="mt-2 text-sm
-                     leading-6 text-slate-500"
+              class="mt-2 text-sm leading-6 text-slate-500"
             >
               {% if lang == 'fa' %}
                 برای ورود به میز تحریریه قلم نویس،
@@ -284,19 +244,62 @@
           </div>
 
 
-
-          <!-- =================================================
+          <!-- ======================================
                LOGIN FORM
-          ================================================== -->
+          ======================================= -->
 
           <form
             action="{{ url_for('auth.login', lang=lang) }}"
             method="post"
             class="mt-6 space-y-4"
           >
+
             {{ form.hidden_tag() }}
 
-            <!-- Username -->
+            <!-- General form errors -->
+            {% if form.form_errors %}
+
+              <div
+                role="alert"
+                class="flex items-start gap-3 rounded-xl
+                       border border-rose-200 bg-rose-50/80
+                       px-4 py-3 text-rose-800"
+              >
+
+                <svg
+                  class="mt-0.5 h-5 w-5 shrink-0 text-rose-500"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path
+                    stroke-linecap="round"
+                    d="M12 7v5m0 4h.01"
+                  ></path>
+                </svg>
+
+                <div class="space-y-1">
+
+                  {% for error in form.form_errors %}
+                    <p class="text-sm font-medium leading-5">
+                      {{ error }}
+                    </p>
+                  {% endfor %}
+
+                </div>
+
+              </div>
+
+            {% endif %}
+
+
+            <!-- ======================================
+                 USERNAME
+            ======================================= -->
+
             <div>
 
               <label
@@ -304,7 +307,7 @@
                 class="block text-sm font-semibold text-slate-700"
               >
                 {{ 'نام کاربری' if lang == 'fa'
-                  else 'Username' }}
+                   else 'Username' }}
               </label>
 
               <div class="relative mt-2">
@@ -314,77 +317,102 @@
                   name="username"
                   type="text"
                   autocomplete="username"
+                  value="{{ form.username.data or '' }}"
                   placeholder="{{ 'نام کاربری خود را وارد کنید'
                                   if lang == 'fa'
                                   else 'Enter your username' }}"
                   required
-                  class="block w-full rounded-xl
-                        border border-stone-300
-                        bg-stone-50
-                        px-4 py-2.5
-                        text-sm text-slate-900
-                        placeholder:text-slate-400
-                        transition-all duration-200
-                        hover:border-stone-400
-                        focus:border-teal-700
-                        focus:bg-white
-                        focus:outline-none
-                        focus:ring-4
-                        focus:ring-teal-700/10"
+                  aria-invalid="{{ 'true' if form.username.errors else 'false' }}"
+                  {% if form.username.errors %}
+                    aria-describedby="username-errors"
+                  {% endif %}
+                  class="block w-full rounded-xl border
+                         px-4 py-2.5 text-sm text-slate-900
+                         placeholder:text-slate-400
+                         transition-all duration-200
+                         focus:outline-none focus:ring-4
+                         {% if form.username.errors %}
+                           border-rose-400 bg-rose-50/30
+                           focus:border-rose-500
+                           focus:ring-rose-500/10
+                         {% else %}
+                           border-stone-300 bg-stone-50
+                           hover:border-stone-400
+                           focus:border-teal-700
+                           focus:bg-white
+                           focus:ring-teal-700/10
+                         {% endif %}"
                 >
 
               </div>
+
+              <!-- Username errors -->
+              {% if form.username.errors %}
+
+                <div id="username-errors" class="mt-2 space-y-1">
+
+                  {% for error in form.username.errors %}
+
+                    <div
+                      role="alert"
+                      class="flex items-start gap-2
+                             rounded-lg border border-rose-200
+                             bg-rose-50/80 px-3 py-2
+                             text-rose-800"
+                    >
+
+                      <svg
+                        class="mt-0.5 h-4 w-4 shrink-0 text-rose-500"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path
+                          stroke-linecap="round"
+                          d="M12 7v5m0 4h.01"
+                        ></path>
+                      </svg>
+
+                      <p class="text-xs font-medium leading-5">
+                        {{ error }}
+                      </p>
+
+                    </div>
+
+                  {% endfor %}
+
+                </div>
+
+              {% endif %}
 
             </div>
-            
 
 
+            <!-- ======================================
+                 PASSWORD
+            ======================================= -->
 
-            <!-- Password -->
             <div>
 
-              <div class="flex items-center justify-between">
-
-                <label
-                  for="password"
-                  class="block text-sm font-semibold
-                         text-slate-700"
-                >
-                  {{ 'رمز عبور' if lang == 'fa'
-                     else 'Password' }}
-                </label>
-
-
-                <a
-                  href="#"
-                  class="rounded text-xs font-semibold
-                         text-teal-700
-                         underline-offset-4
-                         transition-colors
-                         hover:text-teal-900
-                         hover:underline
-                         focus-visible:outline-2
-                         focus-visible:outline-offset-4
-                         focus-visible:outline-teal-700"
-                >
-                  {{ 'رمز عبور را فراموش کرده‌اید؟'
-                     if lang == 'fa'
-                     else 'Forgot password?' }}
-                </a>
-
-              </div>
-
+              <label
+                for="password"
+                class="block text-sm font-semibold text-slate-700"
+              >
+                {{ 'رمز عبور' if lang == 'fa'
+                   else 'Password' }}
+              </label>
 
               <div class="relative mt-2">
 
                 <!-- Lock icon -->
                 <div
-                  class="pointer-events-none
-                         absolute inset-y-0
+                  class="pointer-events-none absolute inset-y-0
                          {{ 'right-0 pr-4' if lang == 'fa'
                             else 'left-0 pl-4' }}
-                         flex items-center
-                         text-slate-400"
+                         flex items-center text-slate-400"
                 >
 
                   <svg
@@ -396,22 +424,20 @@
                     class="h-5 w-5"
                   >
                     <rect
-                      x="5"
-                      y="10"
-                      width="14"
-                      height="10"
+                      x="5" y="10"
+                      width="14" height="10"
                       rx="2"
                     ></rect>
 
                     <path
                       stroke-linecap="round"
-                      d="M8 10V7a4 4 4 0 0 1 8 0v3"
+                      d="M8 10V7a4 4 0 0 1 8 0v3"
                     ></path>
                   </svg>
 
                 </div>
 
-
+                <!-- Password input -->
                 <input
                   id="password"
                   name="password"
@@ -421,38 +447,44 @@
                                   if lang == 'fa'
                                   else 'Enter your password' }}"
                   required
-                  class="block w-full rounded-xl
-                         border border-stone-300
-                         bg-stone-50
+                  aria-invalid="{{ 'true' if form.password.errors else 'false' }}"
+                  {% if form.password.errors %}
+                    aria-describedby="password-errors"
+                  {% endif %}
+                  class="block w-full rounded-xl border
                          py-2.5
                          {{ 'pr-12 pl-12 text-right' if lang == 'fa'
                             else 'pl-12 pr-12 text-left' }}
                          text-sm text-slate-900
                          placeholder:text-slate-400
                          transition-all duration-200
-                         hover:border-stone-400
-                         focus:border-teal-700
-                         focus:bg-white
-                         focus:outline-none
-                         focus:ring-4
-                         focus:ring-teal-700/10"
+                         focus:outline-none focus:ring-4
+                         {% if form.password.errors %}
+                           border-rose-400 bg-rose-50/30
+                           focus:border-rose-500
+                           focus:ring-rose-500/10
+                         {% else %}
+                           border-stone-300 bg-stone-50
+                           hover:border-stone-400
+                           focus:border-teal-700
+                           focus:bg-white
+                           focus:ring-teal-700/10
+                         {% endif %}"
                 >
 
-
-                <!-- Show password button -->
+                <!-- Show / hide password -->
                 <button
+                  id="toggle-login-password"
                   type="button"
-                  aria-label="{{ 'نمایش رمز عبور'
-                                if lang == 'fa'
-                                else 'Show password' }}"
+                  aria-controls="password"
+                  aria-pressed="false"
+                  aria-label="{{ 'نمایش رمز عبور' if lang == 'fa'
+                                 else 'Show password' }}"
                   class="absolute inset-y-0
-                         {{ 'left-0 rounded-l-xl'
-                            if lang == 'fa'
+                         {{ 'left-0 rounded-l-xl' if lang == 'fa'
                             else 'right-0 rounded-r-xl' }}
-                         flex w-12 items-center
-                         justify-center
-                         text-slate-400
-                         transition-colors
+                         flex w-12 items-center justify-center
+                         text-slate-400 transition-colors
                          hover:text-teal-700
                          focus-visible:outline-2
                          focus-visible:outline-teal-700"
@@ -466,6 +498,8 @@
                     aria-hidden="true"
                     class="h-5 w-5"
                   >
+
+                    <!-- Eye outline -->
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -475,11 +509,19 @@
                          S2.25 12 2.25 12Z"
                     ></path>
 
+                    <!-- Eye pupil -->
                     <circle
                       cx="12"
                       cy="12"
                       r="2.75"
                     ></circle>
+
+                    <!-- Slash when password is visible -->
+                    <path
+                      class="password-eye-slash hidden"
+                      stroke-linecap="round"
+                      d="M4 4l16 16"
+                    ></path>
 
                   </svg>
 
@@ -487,52 +529,91 @@
 
               </div>
 
+              <!-- Password errors -->
+              {% if form.password.errors %}
+
+                <div id="password-errors" class="mt-2 space-y-1">
+
+                  {% for error in form.password.errors %}
+
+                    <div
+                      role="alert"
+                      class="flex items-start gap-2
+                             rounded-lg border border-rose-200
+                             bg-rose-50/80 px-3 py-2
+                             text-rose-800"
+                    >
+
+                      <svg
+                        class="mt-0.5 h-4 w-4 shrink-0 text-rose-500"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path
+                          stroke-linecap="round"
+                          d="M12 7v5m0 4h.01"
+                        ></path>
+                      </svg>
+
+                      <p class="text-xs font-medium leading-5">
+                        {{ error }}
+                      </p>
+
+                    </div>
+
+                  {% endfor %}
+
+                </div>
+
+              {% endif %}
+
             </div>
 
 
+            <!-- ======================================
+                 REMEMBER ME
+            ======================================= -->
 
-            <!-- Remember me -->
-            <div class="flex items-center">
+            <div class="flex items-center gap-2">
 
               <input
                 id="remember"
                 name="remember"
                 type="checkbox"
-                class="h-4 w-4 rounded
-                       border-stone-300
-                       text-teal-700
-                       focus:ring-teal-700"
+                value="y"
+                {% if form.remember.data %}checked{% endif %}
+                class="h-4 w-4 rounded border-stone-300
+                       text-teal-700 focus:ring-teal-700"
               >
 
               <label
                 for="remember"
-                class="{{ 'mr-2' if lang == 'fa' else 'ml-2' }}
-                       text-sm text-slate-600"
+                class="text-sm text-slate-600"
               >
-                {{ 'مرا به خاطر بسپار'
-                   if lang == 'fa'
+                {{ 'مرا به خاطر بسپار' if lang == 'fa'
                    else 'Remember me' }}
               </label>
 
             </div>
 
 
+            <!-- ======================================
+                 SUBMIT
+            ======================================= -->
 
-            <!-- Sign in -->
             <button
               type="submit"
-              class="group flex w-full
-                     items-center justify-center
-                     gap-2 rounded-xl
-                     bg-teal-900
-                     px-4 py-3
-                     text-sm font-semibold
-                     text-white
-                     shadow-sm
-                     transition-all duration-200
+              class="group flex w-full items-center
+                     justify-center gap-2 rounded-xl
+                     bg-teal-900 px-4 py-3
+                     text-sm font-semibold text-white
+                     shadow-sm transition-all duration-200
                      hover:-translate-y-0.5
-                     hover:bg-teal-800
-                     hover:shadow-lg
+                     hover:bg-teal-800 hover:shadow-lg
                      focus-visible:outline-2
                      focus-visible:outline-offset-2
                      focus-visible:outline-teal-800
@@ -545,8 +626,7 @@
               <span
                 aria-hidden="true"
                 class="transition-transform duration-200
-                       {{ 'group-hover:-translate-x-1'
-                          if lang == 'fa'
+                       {{ 'group-hover:-translate-x-1' if lang == 'fa'
                           else 'group-hover:translate-x-1' }}
                        motion-reduce:transform-none"
               >
@@ -558,10 +638,9 @@
           </form>
 
 
-
-          <!-- =================================================
+          <!-- ======================================
                CREATE ACCOUNT
-          ================================================== -->
+          ======================================= -->
 
           <div class="mt-5">
 
@@ -570,11 +649,9 @@
               <div class="h-px flex-1 bg-stone-200"></div>
 
               <span
-                class="whitespace-nowrap
-                       text-xs text-slate-400"
+                class="whitespace-nowrap text-xs text-slate-400"
               >
-                {{ 'تازه به قلم نویس پیوسته‌اید؟'
-                   if lang == 'fa'
+                {{ 'تازه به قلم نویس پیوسته‌اید؟' if lang == 'fa'
                    else 'New to Qalam Nevis?' }}
               </span>
 
@@ -582,67 +659,51 @@
 
             </div>
 
-
             <a
               href="{{ url_for('auth.register', lang=lang) }}"
-              class="mt-4 flex w-full
-                     items-center justify-center
-                     rounded-xl
-                     border border-teal-800
-                     bg-white
-                     px-4 py-3
-                     text-sm font-semibold
-                     text-teal-900
-                     transition-all duration-200
+              class="mt-4 flex w-full items-center
+                     justify-center rounded-xl
+                     border border-teal-800 bg-white
+                     px-4 py-3 text-sm font-semibold
+                     text-teal-900 transition-all duration-200
                      hover:-translate-y-0.5
-                     hover:bg-teal-50
-                     hover:shadow-md
+                     hover:bg-teal-50 hover:shadow-md
                      focus-visible:outline-2
                      focus-visible:outline-offset-2
                      focus-visible:outline-teal-800
                      motion-reduce:transform-none
                      motion-reduce:transition-none"
             >
-              {{ 'ایجاد حساب کاربری'
-                 if lang == 'fa'
+              {{ 'ایجاد حساب کاربری' if lang == 'fa'
                  else 'Create an account' }}
             </a>
 
           </div>
 
 
-
-          <!-- =================================================
+          <!-- ======================================
                PRIVATE ACCESS
-          ================================================== -->
+          ======================================= -->
 
-          <div
-            class="mt-6 border-t
-                   border-stone-200 pt-4"
-          >
+          <div class="mt-6 border-t border-stone-200 pt-4">
 
             <div
-              class="flex items-start gap-3
-                     rounded-xl
+              class="flex items-start gap-3 rounded-xl
                      border border-stone-200
                      bg-stone-50 p-4"
             >
 
-              <!-- Lock -->
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="1.7"
                 aria-hidden="true"
-                class="mt-0.5 h-4 w-4
-                       shrink-0 text-teal-700"
+                class="mt-0.5 h-4 w-4 shrink-0 text-teal-700"
               >
                 <rect
-                  x="5"
-                  y="10"
-                  width="14"
-                  height="10"
+                  x="5" y="10"
+                  width="14" height="10"
                   rx="2"
                 ></rect>
 
@@ -652,11 +713,7 @@
                 ></path>
               </svg>
 
-
-              <p
-                class="text-xs leading-5
-                       text-slate-500"
-              >
+              <p class="text-xs leading-5 text-slate-500">
                 {% if lang == 'fa' %}
                   این بخش مخصوص نویسندگان و مدیران
                   تأییدشده قلم نویس است.
@@ -668,20 +725,15 @@
 
             </div>
 
-
-
             <!-- Return home -->
             <div class="mt-4 text-center">
 
               <a
                 href="{{ url_for('home', lang=lang) }}"
-                class="group inline-flex
-                       items-center gap-2 rounded
-                       text-sm font-medium
-                       text-slate-600
-                       underline-offset-4
-                       transition-colors
-                       hover:text-teal-800
+                class="group inline-flex items-center
+                       gap-2 rounded text-sm font-medium
+                       text-slate-600 underline-offset-4
+                       transition-colors hover:text-teal-800
                        hover:underline
                        focus-visible:outline-2
                        focus-visible:outline-offset-4
@@ -691,16 +743,14 @@
                 <span
                   aria-hidden="true"
                   class="transition-transform duration-200
-                         {{ 'group-hover:translate-x-1'
-                            if lang == 'fa'
+                         {{ 'group-hover:translate-x-1' if lang == 'fa'
                             else 'group-hover:-translate-x-1' }}
                          motion-reduce:transform-none"
                 >
                   {{ '→' if lang == 'fa' else '←' }}
                 </span>
 
-                {{ 'بازگشت به قلم نویس'
-                   if lang == 'fa'
+                {{ 'بازگشت به قلم نویس' if lang == 'fa'
                    else 'Return to Qalam Nevis' }}
 
               </a>
@@ -718,5 +768,42 @@
   </div>
 
 </div>
+
+
+<!-- ==========================================
+     PASSWORD VISIBILITY JAVASCRIPT
+=========================================== -->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const password = document.getElementById("password");
+  const toggle = document.getElementById("toggle-login-password");
+
+  if (!password || !toggle) return;
+
+  const isFarsi = password.closest("[lang]")?.lang === "fa";
+
+  toggle.addEventListener("click", () => {
+    const showing = password.type === "password";
+
+    password.type = showing ? "text" : "password";
+
+    const slash = toggle.querySelector(".password-eye-slash");
+
+    if (slash) {
+      slash.classList.toggle("hidden", !showing);
+    }
+
+    toggle.setAttribute("aria-pressed", String(showing));
+
+    toggle.setAttribute(
+      "aria-label",
+      showing
+        ? (isFarsi ? "پنهان کردن رمز عبور" : "Hide password")
+        : (isFarsi ? "نمایش رمز عبور" : "Show password")
+    );
+  });
+});
+</script>
 
 {% endblock %}
