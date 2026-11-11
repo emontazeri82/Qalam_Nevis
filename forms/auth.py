@@ -48,6 +48,7 @@ class BilingualForm(FlaskForm):
 class LoginForm(BilingualForm):
     username = StringField(
         "Username",
+        filters=[lambda value: value.strip() if value is not None else ""],
         validators=[
             DataRequired(),
             Length(min=3, max=30),

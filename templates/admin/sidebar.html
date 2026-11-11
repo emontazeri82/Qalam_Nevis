@@ -1,0 +1,201 @@
+
+{% set fa = lang == "fa" %}
+
+<!-- Mobile overlay -->
+<div
+    id="overlay"
+    onclick="toggleSidebar(false)"
+    class="fixed inset-0 z-40 hidden bg-black/50 lg:hidden">
+</div>
+
+<!-- Admin sidebar -->
+<aside
+    id="sidebar"
+    aria-label="{{ 'ناوبری مدیریت' if fa else 'Admin navigation' }}"
+    class="sidebar fixed top-0 bottom-0 z-50 flex w-72 flex-col
+           overflow-hidden bg-teal-950 text-white shadow-2xl
+           {{ 'right-0' if fa else 'left-0' }}">
+
+    <!-- Brand -->
+    <div class="flex items-center justify-between border-b border-white/10 p-6">
+
+        <a
+            href="{{ url_for('admin_dashboard', lang=lang) }}"
+            class="flex items-center gap-3">
+
+            <div class="flex h-12 w-12 items-center justify-center
+                        rounded-2xl bg-amber-400 text-teal-950">
+                <i data-lucide="book-open-check" class="h-6 w-6"></i>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-extrabold">
+                    {{ "قلم‌نویس" if fa else "Qalam Nevis" }}
+                </h2>
+
+                <p class="text-xs text-teal-200">
+                    {{ "مرکز مدیریت" if fa else "ADMIN CONSOLE" }}
+                </p>
+            </div>
+        </a>
+
+        <button
+            type="button"
+            onclick="toggleSidebar(false)"
+            aria-label="{{ 'بستن منو' if fa else 'Close menu' }}"
+            class="rounded-lg p-2 hover:bg-white/10 lg:hidden">
+
+            <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="min-h-0 flex-1 space-y-7 overflow-y-auto p-4">
+
+        <!-- Overview -->
+        <div>
+            <p class="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-teal-300">
+                {{ "نمای کلی" if fa else "Overview" }}
+            </p>
+
+            <a
+                href="{{ url_for('admin_dashboard', lang=lang) }}#overview"
+                class="nav-link active flex items-center gap-3 rounded-xl p-3 text-sm font-semibold">
+
+                <i data-lucide="layout-dashboard" class="h-5 w-5"></i>
+                {{ "داشبورد" if fa else "Dashboard" }}
+            </a>
+        </div>
+
+        <!-- Content Management -->
+        <div>
+            <p class="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-teal-300">
+                {{ "مدیریت محتوا" if fa else "Content Management" }}
+            </p>
+
+            <div class="space-y-1">
+
+                <a
+                    href="{{ url_for('admin_dashboard', lang=lang) }}#reviews"
+                    class="nav-link flex items-center justify-between rounded-xl p-3 text-sm">
+
+                    <span class="flex items-center gap-3">
+                        <i data-lucide="clipboard-check" class="h-5 w-5"></i>
+                        {{ "بررسی مقالات" if fa else "Editorial Reviews" }}
+                    </span>
+                </a>
+
+                <a
+                    href="{{ url_for('admin_dashboard', lang=lang) }}#reviews"
+                    class="nav-link flex items-center gap-3 rounded-xl p-3 text-sm">
+
+                    <i data-lucide="files" class="h-5 w-5"></i>
+                    {{ "همه مقالات" if fa else "All Articles" }}
+                </a>
+
+                <a
+                    href="{{ url_for('admin_dashboard', lang=lang) }}#categories"
+                    class="nav-link flex items-center gap-3 rounded-xl p-3 text-sm">
+
+                    <i data-lucide="tags" class="h-5 w-5"></i>
+                    {{ "دسته‌بندی‌ها" if fa else "Categories" }}
+                </a>
+
+                <a
+                    href="{{ url_for('admin_dashboard', lang=lang) }}#quick-actions"
+                    class="nav-link flex items-center gap-3 rounded-xl p-3 text-sm">
+
+                    <i data-lucide="images" class="h-5 w-5"></i>
+                    {{ "کتابخانه رسانه" if fa else "Media Library" }}
+                </a>
+
+            </div>
+        </div>
+
+        <!-- User Management -->
+        <div>
+            <p class="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-teal-300">
+                {{ "مدیریت کاربران" if fa else "User Management" }}
+            </p>
+
+            <div class="space-y-1">
+
+                <a
+                    href="{{ url_for('admin_dashboard', lang=lang) }}#writers"
+                    class="nav-link flex items-center gap-3 rounded-xl p-3 text-sm">
+
+                    <i data-lucide="users" class="h-5 w-5"></i>
+                    {{ "نویسندگان" if fa else "Writers" }}
+                </a>
+
+                <a
+                    href="{{ url_for('admin_dashboard', lang=lang) }}#quick-actions"
+                    class="nav-link flex items-center gap-3 rounded-xl p-3 text-sm">
+
+                    <i data-lucide="shield-check" class="h-5 w-5"></i>
+                    {{ "نقش‌ها و مجوزها" if fa else "Roles & Permissions" }}
+                </a>
+
+            </div>
+        </div>
+
+        <!-- System -->
+        <div>
+            <p class="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-teal-300">
+                {{ "سامانه" if fa else "System" }}
+            </p>
+
+            <div class="space-y-1">
+
+                <a
+                    href="{{ url_for('admin_dashboard', lang=lang) }}#activity"
+                    class="nav-link flex items-center gap-3 rounded-xl p-3 text-sm">
+
+                    <i data-lucide="activity" class="h-5 w-5"></i>
+                    {{ "فعالیت‌های اخیر" if fa else "Recent Activity" }}
+                </a>
+
+                <a
+                    href="{{ url_for('admin_dashboard', lang=lang) }}#quick-actions"
+                    class="nav-link flex items-center gap-3 rounded-xl p-3 text-sm">
+
+                    <i data-lucide="settings" class="h-5 w-5"></i>
+                    {{ "تنظیمات" if fa else "Settings" }}
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar footer -->
+    <div class="border-t border-white/10 p-5">
+
+        <a
+            href="{{ url_for('home', lang=lang) }}"
+            class="mb-4 flex items-center gap-3 text-sm text-teal-100 hover:text-white">
+
+            <i data-lucide="external-link" class="h-4 w-4"></i>
+            {{ "مشاهده سایت" if fa else "View Website" }}
+        </a>
+
+        <form
+            method="POST"
+            action="{{ url_for('auth.logout', lang=lang) }}">
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}">
+
+            <button
+                type="submit"
+                class="flex w-full items-center gap-3 rounded-xl
+                       bg-red-500/15 p-3 text-sm font-semibold
+                       text-red-200 transition hover:bg-red-500/25">
+
+                <i data-lucide="log-out" class="h-4 w-4"></i>
+                {{ "خروج از حساب" if fa else "Log Out" }}
+            </button>
+        </form>
+    </div>
+</aside>

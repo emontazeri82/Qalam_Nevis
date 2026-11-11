@@ -316,6 +316,7 @@
                   id="username"
                   name="username"
                   type="text"
+                  lang="{{ lang }}"
                   autocomplete="username"
                   value="{{ form.username.data or '' }}"
                   placeholder="{{ 'نام کاربری خود را وارد کنید'
@@ -442,6 +443,7 @@
                   id="password"
                   name="password"
                   type="password"
+                  lang="{{ lang }}"
                   autocomplete="current-password"
                   placeholder="{{ 'رمز عبور خود را وارد کنید'
                                   if lang == 'fa'

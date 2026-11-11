@@ -216,6 +216,26 @@ def writer_new_article(lang: str):
     )
 
 
+
+@app.route("/<lang>/admin/")
+@login_required
+def admin_dashboard(lang: str):
+    if lang not in ("en", "fa"):
+        abort(404)
+
+    role_codes = {
+        user_role.role.code
+        for user_role in current_user.user_roles
+    }
+
+    if not role_codes.intersection({"admin", "editor"}):
+        abort(403)
+
+    return render_template(
+        "admin/dashboard.html",
+        lang=lang,
+    )
+
 if __name__ == "__main__":
     app.run(
         host="127.0.0.1", 

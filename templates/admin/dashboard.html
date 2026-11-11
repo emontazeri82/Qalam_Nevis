@@ -1,0 +1,559 @@
+
+{% extends "admin/base.html" %}
+
+{% block title %}
+{{ "داشبورد مدیریت" if lang == "fa" else "Admin Dashboard" }} | Qalam Nevis
+{% endblock %}
+
+{% block content %}
+{% set fa = lang == "fa" %}
+
+{% set submissions = [
+    {
+        "title_en": "The City and Its Forgotten Stories",
+        "title_fa": "شهر و داستان‌های فراموش‌شده",
+        "author": "Sara Rahimi",
+        "category": "Stories",
+        "date": "2026-11-10",
+        "status": "pending"
+    },
+    {
+        "title_en": "New Voices in Contemporary Poetry",
+        "title_fa": "صداهای تازه در شعر معاصر",
+        "author": "Amir Karimi",
+        "category": "Poetry",
+        "date": "2026-11-09",
+        "status": "review"
+    },
+    {
+        "title_en": "A Report from the Cultural Quarter",
+        "title_fa": "گزارشی از محله فرهنگی",
+        "author": "Neda Farahani",
+        "category": "Reports",
+        "date": "2026-11-08",
+        "status": "pending"
+    },
+    {
+        "title_en": "Reading the Modern Novel",
+        "title_fa": "خوانشی از رمان مدرن",
+        "author": "Reza Moradi",
+        "category": "Criticism",
+        "date": "2026-11-07",
+        "status": "approved"
+    }
+] %}
+
+<!-- Dashboard toolbar -->
+<header class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div>
+        <h1 class="text-xl font-extrabold text-slate-900">
+            {{ "داشبورد مدیریت" if fa else "Admin Dashboard" }}
+        </h1>
+        <p class="mt-1 text-xs text-slate-500">
+            {{ "مرکز مدیریت قلم‌نویس" if fa else "Qalam Nevis Control Center" }}
+        </p>
+    </div>
+
+    <div class="flex items-center gap-3">
+        <button
+            type="button"
+            onclick="showToast(this.dataset.message)"
+            data-message="{{ 'اعلان‌ها به‌زودی فعال می‌شوند.' if fa else 'Notifications will be available soon.' }}"
+            aria-label="{{ 'اعلان‌ها' if fa else 'Notifications' }}"
+            class="relative rounded-xl border border-slate-200 p-2 hover:bg-slate-50">
+            <i data-lucide="bell" class="h-5 w-5"></i>
+            <span class="absolute right-1 top-1 h-2 w-2 rounded-full bg-amber-400"></span>
+        </button>
+
+        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-teal-700 text-white">
+            <i data-lucide="user-round" class="h-5 w-5"></i>
+        </div>
+    </div>
+</header>
+
+<div id="overview" class="mt-6 space-y-8">
+
+    <!-- Welcome banner -->
+    <section class="relative overflow-hidden rounded-3xl bg-linear-to-r from-teal-900 via-teal-700 to-cyan-600 p-7 text-white shadow-xl sm:p-10">
+        <div class="relative z-10 max-w-2xl">
+            <span class="inline-flex rounded-full bg-white/15 px-4 py-1.5 text-xs font-bold">
+                QALAM NEVIS
+            </span>
+
+            <h2 class="mt-5 text-2xl font-extrabold sm:text-3xl">
+                {{ "به مرکز مدیریت خوش آمدید" if fa else "Welcome to Your Control Center" }}
+            </h2>
+
+            <p class="mt-3 max-w-xl text-sm leading-7 text-teal-50">
+                {{
+                    "مقالات، نویسندگان، انتشار و بررسی‌های سردبیری را از یک مکان مدیریت کنید."
+                    if fa else
+                    "Manage articles, writers, publishing, and editorial reviews from one place."
+                }}
+            </p>
+
+            <a href="#reviews"
+               class="mt-6 inline-flex items-center gap-2 rounded-xl bg-amber-400 px-5 py-3 text-sm font-bold text-teal-950 hover:bg-amber-300">
+                <i data-lucide="clipboard-check" class="h-4 w-4"></i>
+                {{ "بررسی مقالات" if fa else "Review Submissions" }}
+            </a>
+        </div>
+
+        <div class="pointer-events-none absolute -bottom-20 -right-12 h-64 w-64 rounded-full bg-white/10 blur-2xl"></div>
+        <div class="pointer-events-none absolute -top-24 right-1/4 h-48 w-48 rounded-full bg-amber-300/15 blur-2xl"></div>
+    </section>
+
+    <!-- Statistics -->
+    {% set stats = [
+        {
+            "title": "کل مقالات" if fa else "Total Articles",
+            "value": "248",
+            "change": "+12%",
+            "icon": "files",
+            "color": "bg-teal-100 text-teal-700"
+        },
+        {
+            "title": "در انتظار بررسی" if fa else "Pending Review",
+            "value": "8",
+            "change": "+3",
+            "icon": "clock-3",
+            "color": "bg-amber-100 text-amber-700"
+        },
+        {
+            "title": "منتشرشده" if fa else "Published",
+            "value": "186",
+            "change": "+9%",
+            "icon": "check-circle-2",
+            "color": "bg-emerald-100 text-emerald-700"
+        },
+        {
+            "title": "نویسندگان فعال" if fa else "Active Writers",
+            "value": "42",
+            "change": "+5",
+            "icon": "users",
+            "color": "bg-cyan-100 text-cyan-700"
+        }
+    ] %}
+
+    <section class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {% for stat in stats %}
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div class="rounded-xl p-3 {{ stat.color }}">
+                    <i data-lucide="{{ stat.icon }}" class="h-6 w-6"></i>
+                </div>
+
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+                    {{ stat.change }}
+                </span>
+            </div>
+
+            <p class="mt-6 text-sm font-medium text-slate-500">
+                {{ stat.title }}
+            </p>
+
+            <p class="mt-2 text-3xl font-extrabold text-slate-900">
+                {{ stat.value }}
+            </p>
+
+            <p class="mt-2 text-xs text-slate-400">
+                {{ "داده نمایشی" if fa else "Demo data" }}
+            </p>
+        </div>
+        {% endfor %}
+    </section>
+
+    <!-- Editorial review queue -->
+    <section id="reviews" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="flex flex-col gap-4 border-b border-slate-100 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h3 class="text-xl font-extrabold text-slate-900">
+                    {{ "صف بررسی مقالات" if fa else "Editorial Review Queue" }}
+                </h3>
+                <p class="mt-1 text-sm text-slate-500">
+                    {{ "مقالات ارسال‌شده برای بررسی" if fa else "Articles submitted for editorial review" }}
+                </p>
+            </div>
+
+            <span class="w-fit rounded-full bg-amber-100 px-4 py-2 text-xs font-bold text-amber-800">
+                {{ "۸ مقاله در انتظار" if fa else "8 Pending Reviews" }}
+            </span>
+        </div>
+
+        <!-- Search and filter -->
+        <div class="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row">
+            <div class="relative flex-1">
+                <i data-lucide="search"
+                   class="absolute top-3 {{ 'right-3' if fa else 'left-3' }} h-5 w-5 text-slate-400"></i>
+
+                <input
+                    id="articleSearch"
+                    type="search"
+                    oninput="filterArticles()"
+                    placeholder="{{ 'جست‌وجوی مقاله یا نویسنده...' if fa else 'Search articles or authors...' }}"
+                    class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 {{ 'pr-11 pl-4' if fa else 'pl-11 pr-4' }} text-sm outline-none focus:border-teal-500">
+            </div>
+
+            <select
+                id="statusFilter"
+                onchange="filterArticles()"
+                class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm">
+                <option value="all">{{ "همه وضعیت‌ها" if fa else "All Statuses" }}</option>
+                <option value="pending">{{ "در انتظار" if fa else "Pending" }}</option>
+                <option value="review">{{ "در حال بررسی" if fa else "In Review" }}</option>
+                <option value="approved">{{ "تأییدشده" if fa else "Approved" }}</option>
+            </select>
+        </div>
+
+        <!-- Articles table -->
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-195 text-sm">
+                <thead class="bg-slate-50 text-slate-500">
+                    <tr>
+                        <th class="px-6 py-4 text-start">{{ "مقاله" if fa else "Article" }}</th>
+                        <th class="px-5 py-4 text-start">{{ "نویسنده" if fa else "Author" }}</th>
+                        <th class="px-5 py-4 text-start">{{ "تاریخ ارسال" if fa else "Submitted" }}</th>
+                        <th class="px-5 py-4 text-start">{{ "وضعیت" if fa else "Status" }}</th>
+                        <th class="px-6 py-4 text-end">{{ "عملیات" if fa else "Actions" }}</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-slate-100">
+                    {% for article in submissions %}
+                    <tr
+                        class="article-row hover:bg-slate-50"
+                        data-status="{{ article.status }}"
+                        data-search="{{ (article.title_en ~ ' ' ~ article.title_fa ~ ' ' ~ article.author)|lower }}">
+
+                        <td class="px-6 py-5">
+                            <p class="font-semibold text-slate-900">
+                                {{ article.title_fa if fa else article.title_en }}
+                            </p>
+                            <p class="mt-1 text-xs text-slate-400">
+                                {{ article.category }}
+                            </p>
+                        </td>
+
+                        <td class="px-5 py-5">
+                            <div class="flex items-center gap-3">
+                                <span class="flex h-9 w-9 items-center justify-center rounded-full bg-teal-100 text-xs font-bold text-teal-800">
+                                    {{ article.author[:1] }}
+                                </span>
+                                <span class="font-medium">
+                                    {{ article.author }}
+                                </span>
+                            </div>
+                        </td>
+
+                        <td class="px-5 py-5 text-slate-500">
+                            {{ article.date }}
+                        </td>
+
+                        <td class="px-5 py-5">
+                            {% if article.status == "pending" %}
+                            <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">
+                                {{ "در انتظار" if fa else "Pending" }}
+                            </span>
+                            {% elif article.status == "review" %}
+                            <span class="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-800">
+                                {{ "در حال بررسی" if fa else "In Review" }}
+                            </span>
+                            {% else %}
+                            <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">
+                                {{ "تأییدشده" if fa else "Approved" }}
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        <td class="px-6 py-5 text-end">
+                            <button
+                                type="button"
+                                onclick="showToast(this.dataset.message)"
+                                data-message="{{ 'بررسی واقعی مقالات هنوز متصل نشده است.' if fa else 'Article review backend is not connected yet.' }}"
+                                class="rounded-lg border border-teal-200 px-4 py-2 text-xs font-bold text-teal-700 hover:bg-teal-50">
+                                {{ "بررسی" if fa else "Review" }}
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <p id="emptyArticles" class="hidden p-8 text-center text-sm text-slate-500">
+            {{ "مقاله‌ای یافت نشد." if fa else "No matching articles found." }}
+        </p>
+    </section>
+
+    <!-- Performance and quick actions -->
+    <div class="grid gap-6 xl:grid-cols-3">
+
+        <!-- Publishing performance -->
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-2">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-extrabold">
+                        {{ "آمار انتشار" if fa else "Publishing Performance" }}
+                    </h3>
+                    <p class="mt-1 text-xs text-slate-500">
+                        {{ "آمار نمایشی" if fa else "Illustrative publishing activity" }}
+                    </p>
+                </div>
+
+                <i data-lucide="chart-no-axes-column-increasing" class="text-teal-700"></i>
+            </div>
+
+            <div class="mt-8 flex h-52 items-end gap-3 border-b border-slate-200">
+                {% for height in [35, 55, 48, 75, 60, 90, 70, 85, 65, 95, 78, 100] %}
+                <div class="group flex h-full flex-1 items-end">
+                    <div
+                        class="w-full rounded-t-lg bg-linear-to-t from-teal-700 to-cyan-400 transition hover:from-amber-500 hover:to-amber-300"
+                        data-height="{{ height }}">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt-4 flex justify-between text-xs text-slate-400">
+                <span>{{ "هفته ۱" if fa else "Week 1" }}</span>
+                <span>{{ "هفته ۲" if fa else "Week 2" }}</span>
+                <span>{{ "هفته ۳" if fa else "Week 3" }}</span>
+                <span>{{ "هفته ۴" if fa else "Week 4" }}</span>
+            </div>
+        </section>
+
+        <!-- Quick actions -->
+        <section id="quick-actions" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-5 text-lg font-extrabold">
+                {{ "دسترسی سریع" if fa else "Quick Actions" }}
+            </h3>
+
+            {% set actions = [
+                {
+                    "label": "مدیریت کاربران" if fa else "Manage Users",
+                    "icon": "users",
+                    "color": "bg-cyan-100 text-cyan-700"
+                },
+                {
+                    "label": "دسته‌بندی‌ها" if fa else "Categories",
+                    "icon": "tags",
+                    "color": "bg-amber-100 text-amber-700"
+                },
+                {
+                    "label": "کتابخانه رسانه" if fa else "Media Library",
+                    "icon": "images",
+                    "color": "bg-violet-100 text-violet-700"
+                },
+                {
+                    "label": "تنظیمات سایت" if fa else "Site Settings",
+                    "icon": "settings",
+                    "color": "bg-teal-100 text-teal-700"
+                }
+            ] %}
+
+            <div class="grid grid-cols-2 gap-3">
+                {% for action in actions %}
+                <button
+                    type="button"
+                    onclick="showToast(this.dataset.message)"
+                    data-message="{{ 'این بخش هنوز به سرور متصل نشده است.' if fa else 'This feature is not connected yet.' }}"
+                    class="rounded-xl border border-slate-200 p-4 text-start hover:border-teal-400">
+
+                    <span class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl {{ action.color }}">
+                        <i data-lucide="{{ action.icon }}" class="h-5 w-5"></i>
+                    </span>
+
+                    <span class="text-xs font-bold">
+                        {{ action.label }}
+                    </span>
+                </button>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+    <!-- Categories and recent activity -->
+    <div class="grid gap-6 lg:grid-cols-2">
+
+        <!-- Categories -->
+        <section id="categories" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-6 text-lg font-extrabold">
+                {{ "محتوا بر اساس دسته‌بندی" if fa else "Content by Category" }}
+            </h3>
+
+            {% set categories = [
+                {"name": "Stories", "fa": "داستان", "percent": 42, "color": "bg-teal-600"},
+                {"name": "Poetry", "fa": "شعر", "percent": 27, "color": "bg-cyan-500"},
+                {"name": "Reports", "fa": "گزارش", "percent": 19, "color": "bg-amber-400"},
+                {"name": "Criticism", "fa": "نقد", "percent": 12, "color": "bg-violet-500"}
+            ] %}
+
+            <div class="space-y-6">
+                {% for category in categories %}
+                <div>
+                    <div class="mb-2 flex justify-between text-sm">
+                        <span class="font-semibold">
+                            {{ category.fa if fa else category.name }}
+                        </span>
+                        <span class="text-slate-500">
+                            {{ category.percent }}%
+                        </span>
+                    </div>
+
+                    <div class="h-3 overflow-hidden rounded-full bg-slate-100">
+                        <div
+                            class="h-full rounded-full {{ category.color }}"
+                            data-width="{{ category.percent }}">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Recent activity -->
+        <section id="activity" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-6 text-lg font-extrabold">
+                {{ "فعالیت‌های اخیر" if fa else "Recent Activity" }}
+            </h3>
+
+            {% set activities = [
+                {
+                    "en": "A new article was submitted",
+                    "fa": "مقاله جدیدی ارسال شد",
+                    "icon": "file-plus",
+                    "color": "bg-amber-100 text-amber-700"
+                },
+                {
+                    "en": "An article was approved",
+                    "fa": "مقاله‌ای تأیید شد",
+                    "icon": "check-circle",
+                    "color": "bg-emerald-100 text-emerald-700"
+                },
+                {
+                    "en": "A new writer registered",
+                    "fa": "نویسنده جدیدی ثبت‌نام کرد",
+                    "icon": "user-plus",
+                    "color": "bg-cyan-100 text-cyan-700"
+                },
+                {
+                    "en": "An article revision was submitted",
+                    "fa": "نسخه ویرایش‌شده مقاله ارسال شد",
+                    "icon": "pencil",
+                    "color": "bg-violet-100 text-violet-700"
+                }
+            ] %}
+
+            <div class="space-y-5">
+                {% for activity in activities %}
+                <div class="flex items-center gap-4">
+                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl {{ activity.color }}">
+                        <i data-lucide="{{ activity.icon }}" class="h-5 w-5"></i>
+                    </div>
+
+                    <div>
+                        <p class="text-sm font-semibold">
+                            {{ activity.fa if fa else activity.en }}
+                        </p>
+                        <p class="mt-1 text-xs text-slate-400">
+                            {{ "فعالیت نمایشی" if fa else "Demo activity" }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+    <!-- Writer management -->
+    <section id="writers" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h3 class="text-lg font-extrabold">
+                    {{ "مدیریت نویسندگان" if fa else "Writer Management" }}
+                </h3>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    {{ "مدیریت حساب‌ها و نقش‌های نویسندگان" if fa else "Manage writer accounts and permissions" }}
+                </p>
+            </div>
+
+            <button
+                type="button"
+                onclick="showToast(this.dataset.message)"
+                data-message="{{ 'مدیریت کاربران هنوز فعال نشده است.' if fa else 'User management is not connected yet.' }}"
+                class="rounded-xl bg-teal-700 px-5 py-3 text-sm font-bold text-white hover:bg-teal-800">
+                {{ "مشاهده نویسندگان" if fa else "View Writers" }}
+            </button>
+        </div>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+            <div class="rounded-xl bg-teal-50 p-5">
+                <p class="text-sm text-teal-700">
+                    {{ "کل نویسندگان" if fa else "Total Writers" }}
+                </p>
+                <p class="mt-2 text-3xl font-extrabold text-teal-950">
+                    42
+                </p>
+            </div>
+
+            <div class="rounded-xl bg-cyan-50 p-5">
+                <p class="text-sm text-cyan-700">
+                    {{ "نویسندگان فعال" if fa else "Active Writers" }}
+                </p>
+                <p class="mt-2 text-3xl font-extrabold text-cyan-950">
+                    38
+                </p>
+            </div>
+
+            <div class="rounded-xl bg-amber-50 p-5">
+                <p class="text-sm text-amber-700">
+                    {{ "نویسندگان جدید" if fa else "New Writers" }}
+                </p>
+                <p class="mt-2 text-3xl font-extrabold text-amber-950">
+                    5
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <p class="text-center text-xs text-slate-400">
+        {{
+            "داده‌ها نمایشی هستند و هنوز به پایگاه داده متصل نشده‌اند."
+            if fa else
+            "Dashboard data is illustrative and not yet connected to PostgreSQL."
+        }}
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function filterArticles() {
+        const search = document
+            .getElementById("articleSearch")
+            .value.trim().toLowerCase();
+
+        const status = document
+            .getElementById("statusFilter")
+            .value;
+
+        const rows = document.querySelectorAll(".article-row");
+        let visible = 0;
+
+        rows.forEach(row => {
+            const matchesSearch = row.dataset.search.includes(search);
+            const matchesStatus = status === "all" || row.dataset.status === status;
+            const show = matchesSearch && matchesStatus;
+
+            row.classList.toggle("hidden", !show);
+
+            if (show) visible++;
+        });
+
+        document
+            .getElementById("emptyArticles")
+            .classList.toggle("hidden", visible > 0);
+    }
+</script>
+{% endblock %}
